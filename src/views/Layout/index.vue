@@ -111,7 +111,9 @@ const handleCommand = (command) => {
         </div>
       </el-header>
       <el-main><router-view></router-view></el-main>
-      <el-footer>Footer</el-footer>
+      <el-footer>
+        <p>版权所有 © 2025 酒笙清梅</p>
+      </el-footer>
     </el-container>
   </div>
 </template>
@@ -121,6 +123,7 @@ const handleCommand = (command) => {
   position: sticky;
   top: 0;
   z-index: 99;
+  height: 60px;
   background-color: #ffffff;
 
   .header-container {
@@ -128,7 +131,6 @@ const handleCommand = (command) => {
     gap: 16px;
     align-items: center;
     max-width: 1440px;
-    height: 60px;
     margin: auto;
 
     .header-logo {
@@ -171,5 +173,17 @@ const handleCommand = (command) => {
       cursor: pointer;
     }
   }
+}
+
+.el-main {
+  min-height: calc(100vh - 60px - 60px);
+}
+
+.el-footer {
+  height: 60px;
+  line-height: 60px;
+  background-color: #111827;
+  text-align: center;
+  color: #9ca3af;
 }
 </style>
