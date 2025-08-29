@@ -9,6 +9,7 @@ import {
   Clock,
   SwitchButton
 } from '@element-plus/icons-vue'
+import { openLogin } from '@/directives/login'
 
 // 头部导航
 const headerNavList = [
@@ -41,6 +42,7 @@ const headerDropdownList = {
 }
 const handleCommand = (command) => {
   console.log(command)
+  if (command === 'login') openLogin()
 }
 </script>
 
@@ -50,7 +52,7 @@ const handleCommand = (command) => {
       <el-header>
         <div class="header-container">
           <!-- logo -->
-          <h1 class="header-logo">SOSD</h1>
+          <h1 class="header-logo logo">SOSD</h1>
           <!-- 导航 -->
           <el-menu
             class="header-nav"
@@ -63,8 +65,9 @@ const handleCommand = (command) => {
               :index="nav.index"
               :key="nav.label"
               :disabled="nav.disabled"
-              >{{ nav.label }}</el-menu-item
             >
+              {{ nav.label }}
+            </el-menu-item>
           </el-menu>
           <!-- 搜索 -->
           <el-input
@@ -80,9 +83,9 @@ const handleCommand = (command) => {
             </template>
           </el-input>
           <!-- 创作者中心 -->
-          <el-button type="primary" class="header-user-center"
-            >创作者中心</el-button
-          >
+          <el-button type="primary" class="header-user-center">
+            创作者中心
+          </el-button>
           <!-- 头像&下拉菜单 -->
           <el-dropdown
             @command="(command) => handleCommand(command)"
@@ -97,7 +100,7 @@ const handleCommand = (command) => {
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item
-                  v-for="item in true
+                  v-for="item in false
                     ? headerDropdownList.login
                     : headerDropdownList.logout"
                   :key="item.command"
@@ -110,7 +113,9 @@ const handleCommand = (command) => {
           </el-dropdown>
         </div>
       </el-header>
-      <el-main><router-view></router-view></el-main>
+      <el-main>
+        <router-view></router-view>
+      </el-main>
       <el-footer>
         <p>版权所有 © 2025 酒笙清梅</p>
       </el-footer>
@@ -136,18 +141,7 @@ const handleCommand = (command) => {
     .header-logo {
       flex-shrink: 0;
       margin-left: 24px;
-      background-image: linear-gradient(
-        to right,
-        #1e80ff,
-        #6c7dfd,
-        #967af9,
-        #b776f2,
-        #d372e9
-      );
-      background-clip: text;
       font-size: 32px;
-      font-weight: bold;
-      color: transparent;
     }
 
     .header-nav {
