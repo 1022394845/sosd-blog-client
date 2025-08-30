@@ -1,10 +1,5 @@
 import { updatePasswordAPI, userLoginAPI, userRegisterAPI } from '@/apis/user'
-import {
-  defaultSuccess,
-  requiredError,
-  result,
-  unknowError
-} from '@/utils/common'
+import { defaultSuccess, requiredError } from '@/utils/common'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
@@ -23,15 +18,10 @@ export const useUserStore = defineStore(
     async function login(account, password) {
       if (!account || !password) return requiredError
 
-      try {
-        const { code, msg, data } = await userLoginAPI(account, password)
-        if (code === 0) return result(1, msg)
-        token.value = data.token
-        userInfo.value.id = data.id
-        return defaultSuccess
-      } catch {
-        return unknowError
-      }
+      const data = await userLoginAPI(account, password)
+      token.value = data.token
+      userInfo.value.id = data.id
+      return defaultSuccess
     }
 
     /**
@@ -51,13 +41,8 @@ export const useUserStore = defineStore(
     async function register(account, password) {
       if (!account || !password) return requiredError
 
-      try {
-        const { code, msg } = await userRegisterAPI(account, password)
-        if (code === 0) return result(1, msg)
-        return defaultSuccess
-      } catch {
-        return unknowError
-      }
+      await userRegisterAPI(account, password)
+      return defaultSuccess
     }
 
     /**
@@ -69,14 +54,9 @@ export const useUserStore = defineStore(
     async function updatePassword(email, password) {
       if (!email || !password) return requiredError
 
-      try {
-        const { code, msg } = await updatePasswordAPI(email, password)
-        if (code === 0) return result(1, msg)
-        logout() // 退出登录
-        return defaultSuccess
-      } catch {
-        return unknowError
-      }
+      await updatePasswordAPI(email, password)
+      logout() // 退出登录
+      return defaultSuccess
     }
 
     return {

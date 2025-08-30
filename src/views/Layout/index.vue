@@ -189,6 +189,8 @@ const handleCommand = async (command) => {
 
 .el-main {
   min-height: calc(100vh - 60px - 60px);
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .el-footer {
