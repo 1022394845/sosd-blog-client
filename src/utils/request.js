@@ -30,12 +30,8 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   (response) => {
     // 摘取核心响应数据
-    if (
-      response?.status >= 200 &&
-      response?.status < 300 &&
-      response?.data?.code === 1
-    ) {
-      return response.data.data
+    if (response?.status >= 200 && response?.status < 300) {
+      return response.data
     }
     // 处理业务失败
     showMsg(response?.data.msg || '服务异常', 'error')
