@@ -10,6 +10,10 @@ import {
   SwitchButton
 } from '@element-plus/icons-vue'
 import { openLogin } from '@/directives/login'
+import { useUserStore } from '@/stores/user'
+import { showConfirm, showMsg } from '@/utils/common'
+
+const userStore = useUserStore()
 
 // 头部导航
 const headerNavList = [
@@ -40,9 +44,14 @@ const headerDropdownList = {
   ],
   logout: [{ label: '登录账号', command: 'login', icon: User }]
 }
-const handleCommand = (command) => {
-  console.log(command)
+const handleCommand = async (command) => {
   if (command === 'login') openLogin()
+  else if (command === 'logout') {
+    const cancel = await showConfirm('确定退出当前账号吗？')
+    if (cancel) return
+    userStore.logout()
+    showMsg('登出成功', 'success')
+  }
 }
 </script>
 
@@ -100,14 +109,15 @@ const handleCommand = (command) => {
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item
-                  v-for="item in false
+                  v-for="item in userStore.token
                     ? headerDropdownList.login
                     : headerDropdownList.logout"
                   :key="item.command"
                   :command="item.command"
                   :icon="item.icon"
-                  >{{ item.label }}</el-dropdown-item
                 >
+                  {{ item.label }}
+                </el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>

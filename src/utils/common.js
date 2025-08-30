@@ -1,5 +1,3 @@
-// import { ElMessage } from 'element-plus'
-
 /**
  * 使用ElMessage显示操作信息
  * @param {String} message 提示内容
@@ -12,6 +10,25 @@ export function showMsg(message, type, grouping = true) {
     type,
     grouping
   })
+}
+
+/**
+ * 使用ElMessageBox确认操作
+ * @param {String} content 询问内容
+ * @param {String} [title] 标题 默认-温馨提示
+ * @returns {Promise<Boolean>} cancel 是否取消
+ */
+export async function showConfirm(content, title = '温馨提示') {
+  try {
+    await ElMessageBox.confirm(content, title, {
+      type: 'warning',
+      center: true,
+      'show-close': false
+    })
+    return false
+  } catch {
+    return true
+  }
 }
 
 /**

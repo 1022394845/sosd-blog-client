@@ -91,6 +91,7 @@ const getCode = async () => {
 }
 
 // 提交表单
+const loading = ref(false)
 const onSubmit = async () => {
   // 校验表单
   try {
@@ -100,6 +101,7 @@ const onSubmit = async () => {
     return showMsg('表单校验未通过', 'error')
   }
 
+  loading.value = true
   const option = formOption.value
   if (option === 0) {
     // 登录
@@ -113,6 +115,7 @@ const onSubmit = async () => {
   } else {
     // 重置
   }
+  loading.value = false
 }
 </script>
 
@@ -131,7 +134,7 @@ const onSubmit = async () => {
     </template>
 
     <template #default>
-      <div class="form-container">
+      <div class="form-container" v-loading="loading">
         <div class="option">
           <div
             class="option-item"
