@@ -92,7 +92,7 @@ const handleCommand = async (command) => {
             </template>
           </el-input>
           <!-- 创作者中心 -->
-          <el-button type="primary" class="header-user-center">
+          <el-button type="primary" class="header-user-center" v-need-login>
             创作者中心
           </el-button>
           <!-- 头像&下拉菜单 -->

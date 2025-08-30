@@ -12,14 +12,7 @@ export const useUserStore = defineStore(
   'user',
   () => {
     const token = ref(null)
-    const emptyUserInfo = {
-      id: null, // 用户id
-      username: '', // 用户名
-      image: '', // 头像
-      email: '', // 邮箱
-      gender: null // 性别
-    }
-    const userInfo = ref({ ...emptyUserInfo })
+    const userInfo = ref({})
 
     /**
      * 用户登录
@@ -46,7 +39,7 @@ export const useUserStore = defineStore(
      */
     function logout() {
       token.value = null
-      userInfo.value = { ...emptyUserInfo }
+      userInfo.value = {}
     }
 
     /**
