@@ -136,6 +136,15 @@ const onSubmit = async () => {
       handelChangeOption(0) // 切换登录状态
     } else {
       // 重置
+      await validateCode() // 验证码校验
+      const { email, password } = formData.value
+      const { errCode, errMsg } = await userStore.updatePassword(
+        email,
+        password
+      )
+      if (errCode !== 0) return showMsg(errMsg || '重置密码失败', 'error')
+      showMsg('重置密码成功', 'success')
+      handelChangeOption(0) // 切换登录状态
     }
   } finally {
     loading.value = false

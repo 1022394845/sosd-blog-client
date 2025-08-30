@@ -30,3 +30,11 @@ export const getCodeAPI = (email) =>
  */
 export const validateCodeAPI = (email, code) =>
   request.get('/user/login/verify', { params: { email, code } })
+
+/**
+ * 修改密码
+ * @param {String} email 邮箱
+ * @param {String} password 密码
+ */
+export const updatePasswordAPI = (email, password) =>
+  request.put('/user/login/password', {}, { params: { email, password } })

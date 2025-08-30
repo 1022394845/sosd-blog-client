@@ -1,4 +1,4 @@
-import { userLoginAPI, userRegisterAPI } from '@/apis/user'
+import { updatePasswordAPI, userLoginAPI, userRegisterAPI } from '@/apis/user'
 import { defaultSuccess, requiredError, unknowError } from '@/utils/common'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
@@ -61,12 +61,31 @@ export const useUserStore = defineStore(
       }
     }
 
+    /**
+     * 修改密码
+     * @param {String} email 邮箱
+     * @param {String} password 密码
+     * @returns {Promise<Object>} result
+     */
+    async function updatePassword(email, password) {
+      if (!email || !password) return requiredError
+
+      try {
+        await updatePasswordAPI(email, password)
+        logout() // 退出登录
+        return defaultSuccess
+      } catch {
+        return unknowError
+      }
+    }
+
     return {
       token,
       userInfo,
       login,
       logout,
-      register
+      register,
+      updatePassword
     }
   },
   {
