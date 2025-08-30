@@ -44,5 +44,6 @@ export function result(errCode, errMsg, custom = '') {
   if (custom) errMsg = `${custom},${errMsg}`
   return Promise.resolve({ errCode, errMsg })
 }
+export const defaultSuccess = result(0, '请求成功')
 export const requiredError = result(400, '参数缺失')
 export const unknowError = result(500, '服务器错误')

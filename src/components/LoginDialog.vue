@@ -6,6 +6,7 @@ import { Close } from '@element-plus/icons-vue'
 import { showMsg } from '@/utils/common'
 import { useCountdown } from '@/utils/countdown'
 import { useUserStore } from '@/stores/user'
+import { getCodeAPI, validateCodeAPI } from '@/apis/user'
 
 const userStore = useUserStore()
 
@@ -18,6 +19,7 @@ defineExpose({ open, close })
 
 const dialogVisible = ref(false)
 function open() {
+  if (formRef.value) formRef.value.resetFields()
   dialogVisible.value = true
 }
 function close() {
@@ -87,11 +89,24 @@ const getCode = async () => {
     return showMsg('邮箱输入不正确', 'error')
   }
 
-  codeCountdown.start()
+  try {
+    codeCountdown.start()
+    const { email } = formData.value
+    await getCodeAPI(email)
+    showMsg('发送验证码成功，请及时查收', 'success')
+  } catch {
+    return showMsg('发送验证码失败', 'error')
+  }
 }
 
-// 提交表单
 const loading = ref(false)
+// 校验验证码
+const validateCode = async () => {
+  const { email, code } = formData.value
+  if (!email || !code) return Promise.reject()
+  return await validateCodeAPI(email, code)
+}
+// 提交表单
 const onSubmit = async () => {
   // 校验表单
   try {
@@ -103,19 +118,28 @@ const onSubmit = async () => {
 
   loading.value = true
   const option = formOption.value
-  if (option === 0) {
-    // 登录
-    const { account, password } = formData.value
-    const { errCode, errMsg } = await userStore.login(account, password)
-    if (errCode !== 0) return showMsg(errMsg || '登录失败', 'error')
-    showMsg('登录成功', 'success')
-    close()
-  } else if (option === 1) {
-    // 注册
-  } else {
-    // 重置
+  try {
+    if (option === 0) {
+      // 登录
+      const { account, password } = formData.value
+      const { errCode, errMsg } = await userStore.login(account, password)
+      if (errCode !== 0) return showMsg(errMsg || '登录失败', 'error')
+      showMsg('登录成功', 'success')
+      close()
+    } else if (option === 1) {
+      // 注册
+      await validateCode() // 验证码校验
+      const { account, password } = formData.value
+      const { errCode, errMsg } = await userStore.register(account, password)
+      if (errCode !== 0) return showMsg(errMsg || '注册失败', 'error')
+      showMsg('注册成功', 'success')
+      handelChangeOption(0) // 切换登录状态
+    } else {
+      // 重置
+    }
+  } finally {
+    loading.value = false
   }
-  loading.value = false
 }
 </script>
 
@@ -124,6 +148,7 @@ const onSubmit = async () => {
     v-model="dialogVisible"
     width="max(35%, 350px)"
     :show-close="false"
+    :close-on-click-modal="false"
   >
     <!-- 标题 -->
     <template #header>

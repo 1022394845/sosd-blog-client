@@ -1,5 +1,5 @@
-import { userLoginAPI } from '@/apis/user'
-import { requiredError, result, unknowError } from '@/utils/common'
+import { userLoginAPI, userRegisterAPI } from '@/apis/user'
+import { defaultSuccess, requiredError, unknowError } from '@/utils/common'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
@@ -21,20 +21,16 @@ export const useUserStore = defineStore(
      * @param {String} account 账号
      * @param {String} password 密码
      * @returns {Promise<Object>} result
-     * @returns {Number} result.code 请求响应码
-     * @returns {Number} result.id 用户id
-     * @returns {String} result.token 令牌
      */
     async function login(account, password) {
       if (!account || !password) return requiredError
 
       try {
-        const { code, msg, data } = await userLoginAPI(account, password)
-        if (code !== 1) return result(1, msg)
+        const data = await userLoginAPI(account, password)
 
         token.value = data.token
         userInfo.value.id = data.id
-        return result(0, msg)
+        return defaultSuccess
       } catch {
         return unknowError
       }
@@ -48,11 +44,29 @@ export const useUserStore = defineStore(
       userInfo.value = { ...emptyUserInfo }
     }
 
+    /**
+     * 用户注册
+     * @param {String} account 账号
+     * @param {String} password 密码
+     * @returns {Promise<Object>} result
+     */
+    async function register(account, password) {
+      if (!account || !password) return requiredError
+
+      try {
+        await userRegisterAPI(account, password)
+        return defaultSuccess
+      } catch {
+        return unknowError
+      }
+    }
+
     return {
       token,
       userInfo,
       login,
-      logout
+      logout,
+      register
     }
   },
   {

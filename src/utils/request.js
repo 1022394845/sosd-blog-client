@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { showMsg } from './common'
+import { useUserStore } from '@/stores/user'
 
 export const baseURL = import.meta.env.VITE_BASE_URL // 基地址
 
@@ -15,6 +16,8 @@ const request = axios.create({
 request.interceptors.request.use(
   (config) => {
     // 发送请求之前
+    const { token } = useUserStore()
+    if (token) config.headers.token = token
     return config
   },
   (error) => {
@@ -27,8 +30,12 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   (response) => {
     // 摘取核心响应数据
-    if (response?.status >= 200 && response?.status < 300) {
-      return response.data
+    if (
+      response?.status >= 200 &&
+      response?.status < 300 &&
+      response?.data?.code === 1
+    ) {
+      return response.data.data
     }
     // 处理业务失败
     showMsg(response?.data.msg || '服务异常', 'error')
