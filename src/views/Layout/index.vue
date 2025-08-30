@@ -191,6 +191,9 @@ const handleCommand = async (command) => {
   min-height: calc(100vh - 60px - 60px);
   max-width: 1200px;
   margin: 0 auto;
+  padding-left: 0;
+  padding-right: 0;
+  overflow: visible;
 }
 
 .el-footer {

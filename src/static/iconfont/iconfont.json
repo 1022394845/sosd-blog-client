@@ -1,0 +1,86 @@
+{
+  "id": "4926329",
+  "name": "sosd-blog-client",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "1240750",
+      "name": "评论",
+      "font_class": "comment_fill",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    },
+    {
+      "icon_id": "6380878",
+      "name": "点赞_块",
+      "font_class": "like_fill",
+      "unicode": "ec8c",
+      "unicode_decimal": 60556
+    },
+    {
+      "icon_id": "34760289",
+      "name": "收藏 -已收藏-copy",
+      "font_class": "star_fill",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
+      "icon_id": "77697",
+      "name": "点赞",
+      "font_class": "like",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "19604252",
+      "name": "view",
+      "font_class": "view",
+      "unicode": "e6aa",
+      "unicode_decimal": 59050
+    },
+    {
+      "icon_id": "866466",
+      "name": "苹果",
+      "font_class": "ios",
+      "unicode": "e60b",
+      "unicode_decimal": 58891
+    },
+    {
+      "icon_id": "1546556",
+      "name": "安卓",
+      "font_class": "android",
+      "unicode": "e68d",
+      "unicode_decimal": 59021
+    },
+    {
+      "icon_id": "2525864",
+      "name": "数据",
+      "font_class": "backend",
+      "unicode": "e62d",
+      "unicode_decimal": 58925
+    },
+    {
+      "icon_id": "12103044",
+      "name": "指南针",
+      "font_class": "recommended",
+      "unicode": "e61f",
+      "unicode_decimal": 58911
+    },
+    {
+      "icon_id": "18170238",
+      "name": "网页代码,网页程序",
+      "font_class": "frontend",
+      "unicode": "e991",
+      "unicode_decimal": 59793
+    },
+    {
+      "icon_id": "42227529",
+      "name": "robot-2-fill",
+      "font_class": "ai",
+      "unicode": "e7a2",
+      "unicode_decimal": 59298
+    }
+  ]
+}

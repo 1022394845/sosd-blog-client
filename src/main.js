@@ -7,6 +7,8 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 import { needLogin } from './directives/login'
 
+import '@/static/iconfont/iconfont.css'
+
 const app = createApp(App)
 const pinia = createPinia()
 
