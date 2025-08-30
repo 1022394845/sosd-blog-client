@@ -102,7 +102,15 @@ const handleCommand = async (command) => {
           >
             <template #default>
               <el-avatar class="header-avatar" fit="fill">
-                <img v-if="false" src="" alt="" />
+                <el-image
+                  v-if="userStore.userInfo.image"
+                  :src="userStore.userInfo.image"
+                  fit="fill"
+                >
+                  <template #error>
+                    <el-icon><UserFilled /></el-icon>
+                  </template>
+                </el-image>
                 <el-icon v-else><UserFilled /></el-icon>
               </el-avatar>
             </template>
