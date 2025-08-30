@@ -2,10 +2,9 @@ import { ref, computed, onUnmounted } from 'vue'
 /**
  * 倒计时 常用于获取验证码操作
  * @param {Number} delay 倒计时时间(s)
- * @returns {Object} 倒计时控制对象
- * @returns {Function} return.start - 开始倒计时的函数
- * @returns {Function} return.end - 终止倒计时的函数
- * @returns {Ref<Number>} return.remain
+ * @returns {Function} start - 开始倒计时的函数
+ * @returns {Function} end - 终止倒计时的函数
+ * @returns {Ref<Number>} remain
  */
 export const useCountdown = (delay) => {
   const remain = ref(0) // 剩余时间

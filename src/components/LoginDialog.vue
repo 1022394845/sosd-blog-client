@@ -5,6 +5,9 @@ import { registerLoginDialog } from '@/directives/login'
 import { Close } from '@element-plus/icons-vue'
 import { showMsg } from '@/utils/common'
 import { useCountdown } from '@/utils/countdown'
+import { useUserStore } from '@/stores/user'
+
+const userStore = useUserStore()
 
 onMounted(() => {
   // 注册指令
@@ -85,6 +88,31 @@ const getCode = async () => {
   }
 
   codeCountdown.start()
+}
+
+// 提交表单
+const onSubmit = async () => {
+  // 校验表单
+  try {
+    const result = await formRef.value.validate()
+    if (!result) throw new Error()
+  } catch {
+    return showMsg('表单校验未通过', 'error')
+  }
+
+  const option = formOption.value
+  if (option === 0) {
+    // 登录
+    const { account, password } = formData.value
+    const { errCode, errMsg } = await userStore.login(account, password)
+    if (errCode !== 0) return showMsg(errMsg || '登录失败', 'error')
+    showMsg('登录成功', 'success')
+    close()
+  } else if (option === 1) {
+    // 注册
+  } else {
+    // 重置
+  }
 }
 </script>
 
@@ -168,7 +196,7 @@ const getCode = async () => {
               }}
             </el-button>
           </el-form-item>
-          <el-form-item label="密码" prop="password" style="position: relative">
+          <el-form-item label="密码" prop="password">
             <el-input
               v-model="formData.password"
               type="password"
@@ -176,14 +204,6 @@ const getCode = async () => {
               placeholder="请输入密码"
               :maxlength="32"
             ></el-input>
-            <el-button
-              size="small"
-              class="inline-btn"
-              v-if="[0].includes(formOption)"
-              @click="formOption = 2"
-            >
-              忘记密码
-            </el-button>
           </el-form-item>
           <el-form-item
             label="确认密码"
@@ -203,6 +223,7 @@ const getCode = async () => {
           class="submit-btn"
           size="large"
           :class="`gradient-${formOption + 1}`"
+          @click="onSubmit"
         >
           {{ formOptionList[formOption].label }}
         </el-button>

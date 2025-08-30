@@ -20,6 +20,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
     "pinia": "^3.0.3",
+    "pinia-plugin-persistedstate": "^4.5.0",
     "sass": "^1.91.0",
     "unplugin-auto-import": "^20.1.0",
     "unplugin-vue-components": "^29.0.0",
