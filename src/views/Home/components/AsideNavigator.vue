@@ -1,11 +1,14 @@
 <script setup>
 // 文章分类导航
 import { useArticleStore } from '@/stores/article'
+import { useRouter } from 'vue-router'
 
 const { categoryList } = useArticleStore()
 
+const router = useRouter()
+
 const handelChangeCategory = (index) => {
-  console.log(index)
+  router.replace(`/home/${index}`)
 }
 </script>
 

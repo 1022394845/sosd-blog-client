@@ -2,6 +2,7 @@ import axios from 'axios'
 import { showMsg } from './common'
 import { useUserStore } from '@/stores/user'
 
+const NODE_ENV = import.meta.env.NODE_ENV
 export const baseURL = import.meta.env.VITE_BASE_URL // 基地址
 
 const request = axios.create({
@@ -33,7 +34,7 @@ request.interceptors.response.use(
     if (
       response?.status >= 200 &&
       response?.status < 300 &&
-      response?.data.code === 1
+      (NODE_ENV !== 'development' || response?.data.code === 1)
     ) {
       return response.data.data
     }

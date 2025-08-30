@@ -11,7 +11,7 @@ const router = createRouter({
       redirect: '/home',
       children: [
         {
-          path: 'home',
+          path: 'home/:category?',
           component: Home
         }
       ]

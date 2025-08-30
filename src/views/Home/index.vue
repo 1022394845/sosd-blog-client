@@ -1,5 +1,6 @@
 <script setup>
 import AsideNavigator from './components/AsideNavigator.vue'
+import HotList from './components/HotList.vue'
 </script>
 
 <template>
@@ -9,10 +10,7 @@ import AsideNavigator from './components/AsideNavigator.vue'
     </aside>
     <div class="article-list"></div>
     <aside class="aside-section">
-      <div
-        class="hot"
-        style="width: 260px; height: 100px; background-color: blue"
-      ></div>
+      <hot-list></hot-list>
     </aside>
   </div>
 </template>

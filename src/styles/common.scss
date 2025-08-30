@@ -59,6 +59,11 @@ img {
   vertical-align: middle;
   background: #ebebeb no-repeat center / contain;
 }
+a {
+  text-decoration: none;
+  color: #333;
+  outline: none;
+}
 
 .ellipsis {
   white-space: nowrap;
