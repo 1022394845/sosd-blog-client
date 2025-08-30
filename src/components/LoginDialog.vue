@@ -3,6 +3,8 @@
 import { ref, onMounted, useTemplateRef } from 'vue'
 import { registerLoginDialog } from '@/directives/login'
 import { Close } from '@element-plus/icons-vue'
+import { showMsg } from '@/utils/common'
+import { useCountdown } from '@/utils/countdown'
 
 onMounted(() => {
   // 注册指令
@@ -61,10 +63,28 @@ const rules = {
     }
   ]
 }
+
 // 改变表单选项
 const handelChangeOption = (index) => {
   formOption.value = index
   formData.value = { ...defaultForm }
+  if (formRef.value) formRef.value.resetFields()
+}
+
+// 获取验证码
+const codeCountdown = useCountdown(10)
+const getCode = async () => {
+  if (codeCountdown.disabled.value) return
+
+  // 校验邮箱
+  try {
+    const result = await formRef.value.validateField('email')
+    if (!result) throw new Error()
+  } catch {
+    return showMsg('邮箱输入不正确', 'error')
+  }
+
+  codeCountdown.start()
 }
 </script>
 
@@ -100,10 +120,11 @@ const handelChangeOption = (index) => {
           :model="formData"
           :rules="rules"
           :label-width="formOption === 0 ? '40px' : '70px'"
+          hide-required-asterisk
         >
           <el-form-item
             label="账号"
-            props="account"
+            prop="account"
             v-if="[0, 1].includes(formOption)"
           >
             <el-input
@@ -114,7 +135,7 @@ const handelChangeOption = (index) => {
           </el-form-item>
           <el-form-item
             label="邮箱"
-            props="email"
+            prop="email"
             v-if="[1, 2].includes(formOption)"
           >
             <el-input
@@ -125,7 +146,7 @@ const handelChangeOption = (index) => {
           </el-form-item>
           <el-form-item
             label="验证码"
-            props="code"
+            prop="code"
             v-if="[1, 2].includes(formOption)"
             style="position: relative"
           >
@@ -134,13 +155,20 @@ const handelChangeOption = (index) => {
               placeholder="请输入验证码"
               :maxlength="6"
             ></el-input>
-            <el-button size="small" class="inline-btn">获取验证码</el-button>
+            <el-button
+              size="small"
+              class="inline-btn"
+              :disabled="codeCountdown.disabled.value"
+              @click="getCode"
+            >
+              {{
+                codeCountdown.disabled.value
+                  ? `剩余${codeCountdown.remain.value}秒重新获取`
+                  : '获取验证码'
+              }}
+            </el-button>
           </el-form-item>
-          <el-form-item
-            label="密码"
-            props="password"
-            style="position: relative"
-          >
+          <el-form-item label="密码" prop="password" style="position: relative">
             <el-input
               v-model="formData.password"
               type="password"
@@ -159,7 +187,7 @@ const handelChangeOption = (index) => {
           </el-form-item>
           <el-form-item
             label="确认密码"
-            props="repeat"
+            prop="repeat"
             v-if="[1, 2].includes(formOption)"
           >
             <el-input
@@ -211,7 +239,7 @@ const handelChangeOption = (index) => {
     align-items: center;
     margin-bottom: 20px;
     font-size: 16px;
-    color: #333333;
+    color: #666666;
     user-select: none;
 
     &-item {
