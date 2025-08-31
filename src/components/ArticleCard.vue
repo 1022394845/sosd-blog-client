@@ -63,7 +63,7 @@ const props = defineProps({
       </div>
     </div>
     <div class="cover" v-if="detail.image">
-      <el-image :src="detail.image" fit="fill" loading="lazy">
+      <el-image :src="detail.image" fit="fill" lazy>
         <template #error>
           <el-icon><Picture /></el-icon>
         </template>
