@@ -1,6 +1,7 @@
 <script setup>
 import AsideNavigator from './components/AsideNavigator.vue'
 import HotList from './components/HotList.vue'
+import ArticleList from '@/components/ArticleList.vue'
 </script>
 
 <template>
@@ -8,7 +9,9 @@ import HotList from './components/HotList.vue'
     <aside class="aside-nav">
       <aside-navigator></aside-navigator>
     </aside>
-    <div class="article-list"></div>
+    <main class="article-section">
+      <article-list></article-list>
+    </main>
     <aside class="aside-section">
       <hot-list></hot-list>
     </aside>
@@ -29,11 +32,9 @@ import HotList from './components/HotList.vue'
     @include hide-below(1220px);
   }
 
-  .article-list {
+  .article-section {
     flex-shrink: 0;
     width: min(720px, 95vw);
-    height: 2000px;
-    background-color: pink;
   }
 
   .aside-section {

@@ -1,10 +1,8 @@
 <script setup>
-/**
- * 多行基础骨架屏
- * @prop {Number} row 行数 默认为3
- */
 defineProps({
+  // 行数 默认为3
   row: {
+    type: Number,
     default: 3
   }
 })
