@@ -11,8 +11,6 @@ import LoginDialog from '@/components/LoginDialog.vue'
 </template>
 
 <style lang="scss">
-@use '@/styles/common.scss' as *;
-
 .gradient-1 {
   background-image: linear-gradient(
     to right,

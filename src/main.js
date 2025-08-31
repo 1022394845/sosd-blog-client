@@ -9,6 +9,7 @@ import vueDompurifyHTMLPlugin from 'vue-dompurify-html'
 
 import { needLogin } from './directives/login'
 
+import '@/styles/common.scss'
 import '@/static/iconfont/iconfont.css'
 
 const app = createApp(App)

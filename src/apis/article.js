@@ -29,3 +29,10 @@ export const getSearchListAPI = (page, pageSize, config = {}) =>
   request.get('/user/homepage/search', {
     params: { page, pageSize, ...config }
   })
+
+/**
+ * 获取文章详情
+ * @param {Number} id 文章id
+ */
+export const getArticleDetailAPI = (id) =>
+  request.get('/users/article/detail', { params: { id } })

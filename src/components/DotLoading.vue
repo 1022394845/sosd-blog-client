@@ -42,7 +42,6 @@ const size = computed(() => {
   font-size: 16px;
   font-size: inherit;
   color: #666666;
-  color: inherit;
 
   .loading-dot {
     width: v-bind(size);

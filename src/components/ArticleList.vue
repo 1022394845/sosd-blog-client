@@ -65,13 +65,14 @@ defineExpose({ reload })
         style="padding: 20px"
       ></row-skeleton>
 
-      <a
+      <router-link
         v-for="(item, index) in articleList"
         :key="index"
-        :href="`/detail/id=${item.id}`"
+        :to="`/detail?id=${item.id}`"
+        target="_blank"
       >
         <article-card :detail="item" :highlight="highlight"></article-card>
-      </a>
+      </router-link>
     </div>
   </scroll-paging>
 </template>

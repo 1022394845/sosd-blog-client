@@ -17,6 +17,10 @@ const router = createRouter({
         {
           path: 'search',
           component: () => import('@/views/Search/index.vue')
+        },
+        {
+          path: 'detail',
+          component: () => import('@/views/Detail/index.vue')
         }
       ]
     }
