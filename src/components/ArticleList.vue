@@ -3,59 +3,45 @@
 import ScrollPaging from './ScrollPaging.vue'
 import ArticleCard from './ArticleCard.vue'
 import RowSkeleton from './RowSkeleton.vue'
-import { useTemplateRef, ref } from 'vue'
+import { useTemplateRef, ref, computed } from 'vue'
+import { getHomeArticleListAPI } from '@/apis/article'
 
-const mock = {
-  id: 1,
-  title: 'Python编程入门指南',
-  content: 'Python是一种高级编程语言...',
-  preview: 'Python是一种高级编程语言...',
-  isTop: false,
-  isRecommend: true,
-  category: '技术',
-  tags: [
-    {
-      id: 1,
-      name: 'Java',
-      status: 1
-    },
-    {
-      id: 2,
-      name: 'C++',
-      status: 1
-    }
-  ],
-  author: 'Lynn',
-  publishTime: '2025-07-26 13:33:17',
-  createTime: '2025-01-01 08:00:00',
-  updateTime: '2025-01-02 10:00:00',
-  image: 'https://picsum.photos/108/72?random=1',
-  status: 2,
-  likeNumber: 2,
-  viewNumber: 12,
-  commentNumber: 5,
-  favoriteNumber: 3,
-  isLike: false
-}
+const props = defineProps({
+  category: String // 筛选分类
+})
+
+const config = computed(() => ({
+  category: props.category
+}))
 
 const pagingRef = useTemplateRef('pagingRef')
 
 const initLoading = ref(true)
 const articleList = ref([])
 const loadArticle = async (page, pageSize) => {
-  console.log('request', page, pageSize)
+  console.log('request', page, pageSize, config.value)
   try {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        pagingRef.value.completeByTotal(Array(pageSize).fill(mock), 30)
-        initLoading.value = false
-        resolve()
-      }, 2000)
-    })
+    const { records, total } = await getHomeArticleListAPI(
+      page,
+      pageSize,
+      config.value
+    )
+    pagingRef.value.completeByTotal(records, total)
+    initLoading.value = false
   } catch {
     pagingRef.value.completeByTotal(false)
   }
 }
+
+/**
+ * 重载数据
+ */
+const reload = () => {
+  pagingRef.value.reload()
+  initLoading.value = true
+}
+
+defineExpose({ reload })
 </script>
 
 <template>
@@ -71,11 +57,13 @@ const loadArticle = async (page, pageSize) => {
         style="padding: 20px"
       ></row-skeleton>
 
-      <article-card
+      <a
         v-for="(item, index) in articleList"
         :key="index"
-        :detail="item"
-      ></article-card>
+        :href="`/detail/id=${item.id}`"
+      >
+        <article-card :detail="item"></article-card>
+      </a>
     </div>
   </scroll-paging>
 </template>

@@ -54,4 +54,15 @@ import LoginDialog from '@/components/LoginDialog.vue'
   font-weight: bold;
   color: transparent;
 }
+
+.el-image {
+  width: 100%;
+  height: 100%;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  background-color: #f5f7fa;
+  font-size: 16px;
+  font-size: inherit;
+}
 </style>

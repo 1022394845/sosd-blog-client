@@ -8,11 +8,7 @@ const props = defineProps({
     // {
     //   id: 1,
     //   title: 'Python编程入门指南',
-    //   content: 'Python是一种高级编程语言...',
     //   preview: 'Python是一种高级编程语言...',
-    //   isTop: false,
-    //   isRecommend: true,
-    //   category: '技术',
     //   tags: [
     //     {
     //       id: 1,
@@ -26,15 +22,9 @@ const props = defineProps({
     //     }
     //   ],
     //   author: 'Lynn',
-    //   publishTime: '2025-07-26 13:33:17',
-    //   createTime: '2025-01-01 08:00:00',
-    //   updateTime: '2025-01-02 10:00:00',
     //   image: 'python.jpg',
-    //   status: 2,
     //   likeNumber: 2,
     //   viewNumber: 12,
-    //   commentNumber: 5,
-    //   favoriteNumber: 3,
     //   isLike: false
     // }
     type: Object,
@@ -159,12 +149,8 @@ const props = defineProps({
 
   .cover {
     flex-shrink: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     width: 108px;
     height: 72px;
-    background-color: #f5f7fa;
     font-size: 28px;
   }
 }

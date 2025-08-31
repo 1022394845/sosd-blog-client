@@ -2,6 +2,21 @@
 import AsideNavigator from './components/AsideNavigator.vue'
 import HotList from './components/HotList.vue'
 import ArticleList from '@/components/ArticleList.vue'
+import { useRoute } from 'vue-router'
+import { ref, watch, useTemplateRef } from 'vue'
+
+const articleListRef = useTemplateRef('articleListRef')
+
+// 筛选分类
+const route = useRoute()
+const category = ref(route.params.category)
+watch(
+  () => route.params.category,
+  (newValue) => {
+    category.value = newValue
+    articleListRef.value.reload()
+  }
+)
 </script>
 
 <template>
@@ -10,7 +25,7 @@ import ArticleList from '@/components/ArticleList.vue'
       <aside-navigator></aside-navigator>
     </aside>
     <main class="article-section">
-      <article-list></article-list>
+      <article-list ref="articleListRef" :category="category"></article-list>
     </main>
     <aside class="aside-section">
       <hot-list></hot-list>

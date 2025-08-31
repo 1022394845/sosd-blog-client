@@ -1,11 +1,13 @@
 <script setup>
 // 文章分类导航
 import { useArticleStore } from '@/stores/article'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const { categoryList } = useArticleStore()
 
+const route = useRoute()
 const router = useRouter()
+const defaultActive = route.params.category || 'recommended'
 
 const handelChangeCategory = (index) => {
   router.replace(`/home/${index}`)
@@ -16,7 +18,7 @@ const handelChangeCategory = (index) => {
   <el-scrollbar max-height="calc(100vh - 100px)">
     <el-menu
       class="category-nav"
-      default-active="recommended"
+      :default-active="defaultActive"
       text-color="#515767"
       @select="(index) => handelChangeCategory(index)"
     >

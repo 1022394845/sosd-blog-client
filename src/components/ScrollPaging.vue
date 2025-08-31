@@ -62,7 +62,17 @@ const completeByTotal = (data, listTotal, result = true) => {
   }
 }
 
-defineExpose({ completeByTotal })
+/**
+ * 重载数据
+ */
+const reload = () => {
+  dataList.value = []
+  page = 0
+  total = null
+  status.value = 0
+}
+
+defineExpose({ completeByTotal, reload })
 </script>
 
 <template>
