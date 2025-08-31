@@ -5,6 +5,8 @@ import App from './App.vue'
 import router from './router'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
+import vueDompurifyHTMLPlugin from 'vue-dompurify-html'
+
 import { needLogin } from './directives/login'
 
 import '@/static/iconfont/iconfont.css'
@@ -16,6 +18,7 @@ pinia.use(piniaPluginPersistedstate)
 
 app.use(pinia)
 app.use(router)
+app.use(vueDompurifyHTMLPlugin)
 
 app.directive('need-login', needLogin)
 

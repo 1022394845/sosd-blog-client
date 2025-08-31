@@ -37,7 +37,16 @@ export default defineConfig([
           ignores: ['index'] // vue组件名称多单词组成（忽略index.vue）
         }
       ],
-      'vue/no-setup-props-destructure': ['off'] // 关闭 props 解构的校验
+      'vue/no-setup-props-destructure': ['off'], // 关闭 props 解构的校验
+      'no-unused-vars': [
+        'error',
+        {
+          // 忽略以下划线开头的变量（如 _highlight、_temp 等）
+          varsIgnorePattern: '^_',
+          // 忽略函数参数中以下划线开头的未使用参数
+          argsIgnorePattern: '^_'
+        }
+      ]
     }
   }
 ])

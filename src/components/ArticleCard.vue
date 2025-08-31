@@ -1,5 +1,6 @@
 <script setup>
 // 文章卡片
+import { highlightText } from '@/utils/highlight'
 import { Picture } from '@element-plus/icons-vue'
 
 const props = defineProps({
@@ -29,15 +30,24 @@ const props = defineProps({
     // }
     type: Object,
     required: true
-  }
+  },
+  highlight: String
 })
+
+const highlightMatch = (text) => highlightText(text, props.highlight)
 </script>
 
 <template>
   <article class="article-card">
     <div class="info">
-      <h1 class="title ellipsis">{{ detail.title }}</h1>
-      <p class="preview ellipsis">{{ detail.preview }}</p>
+      <h1
+        class="title ellipsis"
+        v-dompurify-html="highlightMatch(detail.title)"
+      ></h1>
+      <p
+        class="preview ellipsis"
+        v-dompurify-html="highlightMatch(detail.preview)"
+      ></p>
       <div class="base">
         <address class="author ellipsis color-hover">
           {{ detail.author }}
@@ -121,12 +131,12 @@ const props = defineProps({
 
       .author {
         flex-shrink: 0;
-        max-width: 40px;
+        max-width: 100px;
       }
 
       .author,
       .divider {
-        @include hide-below(350px);
+        @include hide-below(430px);
       }
 
       .data {
@@ -142,7 +152,7 @@ const props = defineProps({
         gap: 5px;
         margin-left: auto;
         overflow: hidden;
-        @include hide-below(500px);
+        @include hide-below(530px);
 
         .tag {
           padding: 0 6px;

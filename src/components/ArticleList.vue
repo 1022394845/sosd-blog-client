@@ -14,7 +14,8 @@ const props = defineProps({
   },
   category: String, // 筛选分类
   title: String, // 搜索标题
-  tag: String // 搜索标签
+  tag: String, // 搜索标签
+  highlight: String // 高亮关键词
 })
 
 // 根据props.type选择对应的API
@@ -30,7 +31,7 @@ const articleList = ref([])
 const loadArticle = async (page, pageSize) => {
   console.log('request', page, pageSize, { ...props })
   try {
-    const { type, ...config } = props
+    const { type, highlight: _, ...config } = props
 
     const { records, total } = await apiMap[type](page, pageSize, config)
     pagingRef.value.completeByTotal(records, total)
@@ -69,7 +70,7 @@ defineExpose({ reload })
         :key="index"
         :href="`/detail/id=${item.id}`"
       >
-        <article-card :detail="item"></article-card>
+        <article-card :detail="item" :highlight="highlight"></article-card>
       </a>
     </div>
   </scroll-paging>

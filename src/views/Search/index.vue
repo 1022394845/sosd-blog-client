@@ -10,7 +10,7 @@ const tag = computed(() => route.query.tag)
 const articleListRef = useTemplateRef('articleListRef')
 
 watch(
-  () => route.params,
+  () => route.query,
   () => {
     articleListRef.value.reload()
   }
@@ -26,6 +26,7 @@ watch(
         :type="1"
         :title="title"
         :tag="tag"
+        :highlight="title || tag"
       ></article-list>
     </main>
   </div>
