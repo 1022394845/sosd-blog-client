@@ -12,8 +12,11 @@ import {
 import { openLogin } from '@/directives/login'
 import { useUserStore } from '@/stores/user'
 import { showConfirm, showMsg } from '@/utils/common'
+import { useRouter } from 'vue-router'
 
 const userStore = useUserStore()
+
+const router = useRouter()
 
 // 头部导航
 const headerNavList = [
@@ -30,7 +33,7 @@ const searchValue = ref('')
 const onSearch = () => {
   if (!allowSearch || !searchValue.value) return // 当输入内容未发生改变或未输入内容时
   allowSearch = false
-  console.log('search:', searchValue.value)
+  router.replace(`/search?title=${searchValue.value}`)
 }
 
 // 头部下拉菜单
@@ -82,7 +85,7 @@ const handleCommand = async (command) => {
           <el-input
             v-model.trim="searchValue"
             class="header-search"
-            placeholder="探索平台"
+            placeholder="探索SOSD"
             :max="32"
             @change="allowSearch = true"
             @keyup.enter="onSearch"
@@ -171,7 +174,7 @@ const handleCommand = async (command) => {
     }
 
     .header-search {
-      min-width: 120px;
+      min-width: 130px;
       max-width: 300px;
     }
 

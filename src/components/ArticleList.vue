@@ -3,29 +3,36 @@
 import ScrollPaging from './ScrollPaging.vue'
 import ArticleCard from './ArticleCard.vue'
 import RowSkeleton from './RowSkeleton.vue'
-import { useTemplateRef, ref, computed } from 'vue'
-import { getHomeArticleListAPI } from '@/apis/article'
+import { useTemplateRef, ref } from 'vue'
+import { getHomeArticleListAPI, getSearchListAPI } from '@/apis/article'
 
 const props = defineProps({
-  category: String // 筛选分类
+  type: {
+    // 类别 0-首页列表 1-搜索列表
+    type: Number,
+    required: true
+  },
+  category: String, // 筛选分类
+  title: String, // 搜索标题
+  tag: String // 搜索标签
 })
 
-const config = computed(() => ({
-  category: props.category
-}))
+// 根据props.type选择对应的API
+const apiMap = {
+  0: getHomeArticleListAPI,
+  1: getSearchListAPI
+}
 
 const pagingRef = useTemplateRef('pagingRef')
 
 const initLoading = ref(true)
 const articleList = ref([])
 const loadArticle = async (page, pageSize) => {
-  console.log('request', page, pageSize, config.value)
+  console.log('request', page, pageSize, { ...props })
   try {
-    const { records, total } = await getHomeArticleListAPI(
-      page,
-      pageSize,
-      config.value
-    )
+    const { type, ...config } = props
+
+    const { records, total } = await apiMap[type](page, pageSize, config)
     pagingRef.value.completeByTotal(records, total)
     initLoading.value = false
   } catch {

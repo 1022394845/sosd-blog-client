@@ -9,7 +9,7 @@ const articleListRef = useTemplateRef('articleListRef')
 
 // 筛选分类
 const route = useRoute()
-const category = ref(route.params.category)
+const category = ref(route.params.category || undefined)
 watch(
   () => route.params.category,
   (newValue) => {
@@ -25,7 +25,11 @@ watch(
       <aside-navigator></aside-navigator>
     </aside>
     <main class="article-section">
-      <article-list ref="articleListRef" :category="category"></article-list>
+      <article-list
+        ref="articleListRef"
+        :type="0"
+        :category="category"
+      ></article-list>
     </main>
     <aside class="aside-section">
       <hot-list></hot-list>

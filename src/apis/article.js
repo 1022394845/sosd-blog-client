@@ -16,3 +16,16 @@ export const getHomeArticleListAPI = (page, pageSize, config = {}) =>
   request.get('/user/homepage/articles', {
     params: { page, pageSize, ...config }
   })
+
+/**
+ * 搜索文章
+ * @param {Number} page 当前页码
+ * @param {Number} pageSize 页容量
+ * @param {Object} config 搜索配置项
+ * @param {String} [config.category] 搜索分类
+ * @param {String} [config.tag] 搜索标签
+ */
+export const getSearchListAPI = (page, pageSize, config = {}) =>
+  request.get('/user/homepage/search', {
+    params: { page, pageSize, ...config }
+  })

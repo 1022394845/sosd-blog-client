@@ -56,6 +56,7 @@ const props = defineProps({
             class="tag color-hover ellipsis"
             v-for="item in detail.tags"
             :key="item.id"
+            @click.stop.prevent="$router.replace(`/search?tag=${item.name}`)"
           >
             {{ item.name }}
           </div>

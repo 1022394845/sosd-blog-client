@@ -13,6 +13,10 @@ const router = createRouter({
         {
           path: 'home/:category?',
           component: Home
+        },
+        {
+          path: 'search',
+          component: () => import('@/views/Search/index.vue')
         }
       ]
     }
