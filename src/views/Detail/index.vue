@@ -26,7 +26,7 @@ onMounted(() => {
 
 <template>
   <div class="page-container" v-loading="detailLoading">
-    <div class="article">
+    <article class="article">
       <template v-if="detail.id">
         <header class="header">
           <h1 class="title">{{ detail.title }}</h1>
@@ -38,9 +38,7 @@ onMounted(() => {
               <span class="data-number">{{ detail.viewNumber }}</span>
             </div>
           </div>
-        </header>
-        <el-divider></el-divider>
-        <main class="main">
+          <el-divider></el-divider>
           <!-- AI总结 -->
           <section class="abstract">
             <p class="ellipsis-3">
@@ -51,13 +49,14 @@ onMounted(() => {
               <template v-else>{{ abstract }}</template>
             </p>
           </section>
-          <!-- 文章内容 -->
-          <div class="content">
-            <rich-text :text="detail.content"></rich-text>
-          </div>
-        </main>
+        </header>
+
+        <!-- 文章内容 -->
+        <div class="content">
+          <rich-text :text="detail.content"></rich-text>
+        </div>
       </template>
-    </div>
+    </article>
     <div class="comment" v-if="detail.id">评论</div>
   </div>
 </template>
@@ -96,9 +95,7 @@ onMounted(() => {
           }
         }
       }
-    }
 
-    .main {
       .abstract {
         margin-bottom: 20px;
         padding: 8px 16px;
