@@ -29,7 +29,7 @@ const mock = {
   publishTime: '2025-07-26 13:33:17',
   createTime: '2025-01-01 08:00:00',
   updateTime: '2025-01-02 10:00:00',
-  image: 'python.jpg',
+  image: 'https://picsum.photos/108/72?random=1',
   status: 2,
   likeNumber: 2,
   viewNumber: 12,
