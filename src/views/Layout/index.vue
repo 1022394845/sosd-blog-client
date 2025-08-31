@@ -154,11 +154,11 @@ const handleCommand = async (command) => {
     gap: 16px;
     align-items: center;
     max-width: 1440px;
+    height: 100%;
     margin: auto;
 
     .header-logo {
       flex-shrink: 0;
-      margin-left: 24px;
       font-size: 32px;
     }
 
@@ -167,6 +167,7 @@ const handleCommand = async (command) => {
       min-width: 136px;
       width: 0;
       border-bottom: none;
+      @include hide-below(450px);
     }
 
     .header-search {
