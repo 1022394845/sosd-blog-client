@@ -42,7 +42,7 @@ const props = defineProps({
         <address class="author ellipsis color-hover">
           {{ detail.author }}
         </address>
-        <el-divider direction="vertical" />
+        <el-divider direction="vertical" class="divider" />
         <div class="data view">
           <span class="data-icon iconfont icon-view"></span>
           <span class="data-number">{{ detail.viewNumber }}</span>
@@ -124,6 +124,11 @@ const props = defineProps({
         max-width: 40px;
       }
 
+      .author,
+      .divider {
+        @include hide-below(350px);
+      }
+
       .data {
         flex-shrink: 0;
         &-number {
@@ -137,6 +142,7 @@ const props = defineProps({
         gap: 5px;
         margin-left: auto;
         overflow: hidden;
+        @include hide-below(500px);
 
         .tag {
           padding: 0 6px;
@@ -153,6 +159,7 @@ const props = defineProps({
     width: 108px;
     height: 72px;
     font-size: 28px;
+    @include hide-below(300px);
   }
 }
 </style>
