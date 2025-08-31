@@ -1,50 +1,88 @@
 <script setup>
 // 文章列表 下拉加载
-import { useObserver } from '@/utils/observer'
+import ScrollPaging from './ScrollPaging.vue'
 import ArticleCard from './ArticleCard.vue'
-import DotLoading from './DotLoading.vue'
+import RowSkeleton from './RowSkeleton.vue'
 import { useTemplateRef, ref } from 'vue'
 
-const articleList = ref(0)
-const loadArticle = async () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      articleList.value += 10
-      resolve()
-    }, 2000)
-  })
+const mock = {
+  id: 1,
+  title: 'Python编程入门指南',
+  content: 'Python是一种高级编程语言...',
+  preview: 'Python是一种高级编程语言...',
+  isTop: false,
+  isRecommend: true,
+  category: '技术',
+  tags: [
+    {
+      id: 1,
+      name: 'Java',
+      status: 1
+    },
+    {
+      id: 2,
+      name: 'C++',
+      status: 1
+    }
+  ],
+  author: 'Lynn',
+  publishTime: '2025-07-26 13:33:17',
+  createTime: '2025-01-01 08:00:00',
+  updateTime: '2025-01-02 10:00:00',
+  image: 'python.jpg',
+  status: 2,
+  likeNumber: 2,
+  viewNumber: 12,
+  commentNumber: 5,
+  favoriteNumber: 3,
+  isLike: false
 }
 
-const loadingRef = useTemplateRef('loadingRef')
-const observer = useObserver(loadingRef, loadArticle)
+const pagingRef = useTemplateRef('pagingRef')
+
+const initLoading = ref(true)
+const articleList = ref([])
+const loadArticle = async (page, pageSize) => {
+  console.log('request', page, pageSize)
+  try {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        pagingRef.value.completeByTotal(Array(pageSize).fill(mock), 30)
+        initLoading.value = false
+        resolve()
+      }, 2000)
+    })
+  } catch {
+    pagingRef.value.completeByTotal(false)
+  }
+}
 </script>
 
 <template>
-  <div class="article-list">
-    <article-card v-for="item in articleList" :key="item"></article-card>
+  <scroll-paging
+    v-model="articleList"
+    ref="pagingRef"
+    @on-load="(page, pageSize) => loadArticle(page, pageSize)"
+  >
+    <div class="article-list">
+      <row-skeleton
+        :row="4"
+        v-if="initLoading"
+        style="padding: 20px"
+      ></row-skeleton>
 
-    <!-- 状态 -->
-    <div class="status loading" ref="loadingRef" v-if="true">
-      <dot-loading>加载中</dot-loading>
+      <article-card
+        v-for="(item, index) in articleList"
+        :key="index"
+        :detail="item"
+      ></article-card>
     </div>
-    <div class="status no-more" v-else>暂无更多</div>
-  </div>
+  </scroll-paging>
 </template>
 
 <style lang="scss" scoped>
 .article-list {
   width: 100%;
-  min-height: calc(100vh - 60px - 60px);
   background-color: #ffffff;
-
-  .status {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 40px;
-    color: #666666;
-    user-select: none;
-  }
 }
 </style>
