@@ -34,7 +34,10 @@ const handelPublish = async (value) => {
     <header class="header">评论</header>
     <div class="publish-comment">
       <div class="avatar">
-        <common-avatar :src="userStore.userInfo.image"></common-avatar>
+        <common-avatar
+          :src="userStore.userInfo.image"
+          size="40px"
+        ></common-avatar>
       </div>
       <div class="editor">
         <comment-editor
@@ -68,6 +71,10 @@ const handelPublish = async (value) => {
     .editor {
       flex: 1;
     }
+  }
+
+  .comment-list {
+    margin-top: 40px;
   }
 }
 </style>

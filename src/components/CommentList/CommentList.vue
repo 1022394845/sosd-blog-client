@@ -3,7 +3,7 @@
 import { getCommentListAPI } from '@/apis/article'
 import { ref, useTemplateRef } from 'vue'
 import CommonPaging from '../CommonPaging.vue'
-import RootComment from './components/RootComment.vue'
+import CommentCard from './components/CommentCard.vue'
 
 const props = defineProps({
   id: {
@@ -31,17 +31,24 @@ const getRootCommentList = async (page, pageSize) => {
   <common-paging
     v-model="rootCommentList"
     ref="pagingRef"
+    position="right"
     :page-size="10"
     @on-load="(page, pageSize) => getRootCommentList(page, pageSize)"
   >
-    <div class="root-comment-list">
-      <root-comment
+    <div class="comment-list root">
+      <comment-card
         v-for="item in rootCommentList"
         :key="item.id"
         :detail="item"
-      ></root-comment>
+      ></comment-card>
     </div>
   </common-paging>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.comment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+</style>

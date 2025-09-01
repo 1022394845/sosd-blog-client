@@ -1,17 +1,20 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4926329 */
-  src: url('iconfont.woff2?t=1756551877658') format('woff2'),
-       url('iconfont.woff?t=1756551877658') format('woff'),
-       url('iconfont.ttf?t=1756551877658') format('truetype');
+  src: url('iconfont.woff2?t=1756709054389') format('woff2'),
+       url('iconfont.woff?t=1756709054389') format('woff'),
+       url('iconfont.ttf?t=1756709054389') format('truetype');
 }
 
 .iconfont {
   font-family: "iconfont" !important;
   font-size: 16px;
-  font-size: inherit;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-comment:before {
+  content: "\e62f";
 }
 
 .icon-comment_fill:before {
