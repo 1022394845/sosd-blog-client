@@ -1,8 +1,13 @@
 <script setup>
 import { UserFilled } from '@element-plus/icons-vue'
 
-defineProps({
-  src: String // 头像图片url地址
+const props = defineProps({
+  src: String, // 头像图片url地址
+  size: {
+    // 头像大小 默认35px
+    type: String,
+    default: '35px'
+  }
 })
 </script>
 
@@ -19,8 +24,8 @@ defineProps({
 
 <style lang="scss" scoped>
 .avatar {
-  width: 35px;
-  height: 35px;
+  width: v-bind('props.size');
+  height: v-bind('props.size');
   margin-left: auto;
   font-size: 18px;
   cursor: pointer;
