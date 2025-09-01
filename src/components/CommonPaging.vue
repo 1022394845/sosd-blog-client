@@ -90,6 +90,9 @@ defineExpose({ completeByTotal, reload })
       </el-button>
     </div>
 
+    <!-- 空内容 -->
+    <div class="empty" v-if="total === 0" style="color: #666666">暂无更多</div>
+
     <!-- 内容插槽 -->
     <slot></slot>
 
@@ -118,7 +121,9 @@ defineExpose({ completeByTotal, reload })
 .common-paging {
   width: 100%;
 
-  .error {
+  .error,
+  .empty {
+    width: fit-content;
     margin: 0 auto;
   }
 

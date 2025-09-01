@@ -65,7 +65,14 @@ watch(
     </div>
 
     <div class="detail">
-      <address class="username">{{ detail.username }}</address>
+      <header class="header">
+        <address class="username">{{ detail.username }}</address>
+        <!-- 子评论 -->
+        <template v-if="detail.fatherId !== -1">
+          <span class="reply">回复</span>
+          <span class="username">{{ detail.fatherUserName }}</span>
+        </template>
+      </header>
       <h1 class="content">{{ detail.content }}</h1>
       <div class="btn-group">
         <div
@@ -99,8 +106,14 @@ watch(
   .detail {
     flex: 1;
 
-    .username {
-      color: #515767;
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      .username {
+        color: #515767;
+      }
     }
 
     .btn-group {
