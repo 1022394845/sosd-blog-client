@@ -1,6 +1,7 @@
 <script setup>
 import CommonAvatar from '@/components/CommonAvatar.vue'
 import CommentEditor from '@/components/CommentEditor.vue'
+import DotLoading from '@/components/DotLoading.vue'
 import { useCommentStore } from '@/stores/comment'
 import { computed, useTemplateRef, watch, nextTick } from 'vue'
 
@@ -10,28 +11,35 @@ const props = defineProps({
   detail: {
     type: Object,
     required: true
-  },
-  rootId: Number // 根评论id 用于确定回复框显示
+  }
 })
-/**
- * reply 回复评论
- * @param {Number} parentId 回复评论的父评论id
- * @param {Number} id 回复评论id
- */
-const emits = defineEmits(['reply'])
+const emits = defineEmits(['load'])
 
 const handleReply = () => {
-  emits('reply', props.detail.fatherId, props.detail.id)
+  commentStore.handleReply(props.detail.id)
 }
 
+/**
+ * load 加载子评论
+ * @param {Number} id 评论id
+ */
+const handleLoad = () => {
+  if (commentStore.disabledCommentLoad) return
+  commentStore.onLoadCommentId = props.detail.id
+  emits('load', props.detail.id)
+}
+
+// 显示查看对话按钮
+const showLoad = computed(
+  () => !commentStore.loadedCommentIds.includes(props.detail.id)
+)
+// 查看对话加载状态
+const onLoading = computed(
+  () => commentStore.onLoadCommentId === props.detail.id
+)
+
 // 显示回复框
-const showEditor = computed(() => {
-  return (
-    props.detail.id === commentStore.replyId &&
-    props.detail.fatherId === commentStore.replyParentId &&
-    props.rootId === commentStore.replyRootId
-  )
-})
+const showEditor = computed(() => commentStore.isCurrentReply(props.detail.id))
 
 // 显示回复框后自动聚焦
 const editorRef = useTemplateRef('editorRef')
@@ -40,10 +48,10 @@ watch(
   (newValue, oldValue) => {
     if (newValue && !oldValue) {
       nextTick(() => {
-        // 延迟0.3s给过渡动画时间
+        // 延迟0.1s优化视觉体验
         setTimeout(() => {
           editorRef.value.focus()
-        }, 300)
+        }, 100)
       })
     }
   }
@@ -59,13 +67,19 @@ watch(
     <div class="detail">
       <address class="username">{{ detail.username }}</address>
       <h1 class="content">{{ detail.content }}</h1>
-      <div
-        class="comment-btn"
-        v-need-login="handleReply"
-        :class="{ active: showEditor }"
-      >
-        <span class="iconfont icon-comment"></span>
-        <span style="margin-left: 2px">评论</span>
+      <div class="btn-group">
+        <div
+          class="btn reply"
+          v-need-login="handleReply"
+          :class="{ active: showEditor }"
+        >
+          <span class="iconfont icon-comment"></span>
+          <span style="margin-left: 2px">评论</span>
+        </div>
+        <div class="btn more" v-if="showLoad" @click="handleLoad">
+          <dot-loading v-if="onLoading">加载中</dot-loading>
+          <template v-else>查看对话</template>
+        </div>
       </div>
 
       <!-- 回复框 -->
@@ -89,15 +103,21 @@ watch(
       color: #515767;
     }
 
-    .comment-btn {
-      margin-top: 5px;
-      color: #8a919f;
-      cursor: pointer;
-      user-select: none;
+    .btn-group {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin: 5px 0;
 
-      &:hover,
-      &.active {
-        color: $sosd-main-color-1;
+      .btn {
+        color: #8a919f;
+        cursor: pointer;
+        user-select: none;
+
+        &:hover,
+        &.active {
+          color: $sosd-main-color-1;
+        }
       }
     }
   }

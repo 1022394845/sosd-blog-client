@@ -83,9 +83,6 @@ defineExpose({ completeByTotal, reload })
 
 <template>
   <div class="common-paging">
-    <!-- 内容插槽 -->
-    <slot></slot>
-
     <!-- 加载失败 -->
     <div class="error" v-if="status === 1">
       <el-button size="small" @click="handleResume">
@@ -93,8 +90,12 @@ defineExpose({ completeByTotal, reload })
       </el-button>
     </div>
 
+    <!-- 内容插槽 -->
+    <slot></slot>
+
     <div
       class="pagination"
+      v-if="total !== null"
       :style="{
         'justify-content': `flex-${position === 'left' ? 'start' : 'end'}`
       }"
@@ -104,6 +105,7 @@ defineExpose({ completeByTotal, reload })
         layout="prev, pager, next"
         :small="small"
         :pager-count="5"
+        hide-on-single-page
         v-model:current-page="page"
         :default-page-size="pageSize"
         :total="total"
@@ -117,7 +119,7 @@ defineExpose({ completeByTotal, reload })
   width: 100%;
 
   .error {
-    margin: 20px auto;
+    margin: 0 auto;
   }
 
   .pagination {

@@ -1,7 +1,7 @@
 <script setup>
 // 评论列表入口文件
 import { getCommentListAPI } from '@/apis/article'
-import { ref, useTemplateRef } from 'vue'
+import { ref, useTemplateRef, nextTick } from 'vue'
 import CommonPaging from '../CommonPaging.vue'
 import CommentCard from './components/CommentCard.vue'
 import { useCommentStore } from '@/stores/comment'
@@ -16,46 +16,109 @@ const props = defineProps({
   }
 })
 
-const pagingRef = useTemplateRef('pagingRef')
-
+const rootPagingRef = useTemplateRef('rootPagingRef')
 const rootCommentList = ref([])
+/**
+ * 获取根评论列表
+ * @param {Number} page 当前页码
+ * @param {Number} pageSize 页容量
+ */
 const getRootCommentList = async (page, pageSize) => {
   console.log('request-root', page, pageSize)
   try {
     const { records, total } = await getCommentListAPI(props.id, page, pageSize)
-    pagingRef.value.completeByTotal(records, total)
+    rootPagingRef.value.completeByTotal(records, total)
   } catch {
-    pagingRef.value.completeByTotal(false)
+    rootPagingRef.value.completeByTotal(false)
   }
 }
 
 /**
- * 回复评论
- * @param {Number} rootId 回复评论的根评论id
- * @param {Number} parentId 回复评论的父评论id
- * @param {Number} id 回复评论的id
+ * 激活加载一级子评论
+ * @param {Number} id 根评论id
  */
-const handleReply = (rootId, parentId, id) => {
-  commentStore.handleReply(rootId, parentId, id)
+const activeBranch = (id) => {
+  const index = rootCommentList.value.findIndex((item) => item.id === id)
+  if (index !== -1) rootCommentList.value[index].children = []
+}
+const branchPagingRefs = {}
+const setBranchPagingRef = (el, id) => {
+  if (el && !branchPagingRefs[id]) {
+    branchPagingRefs[id] = el
+  } else if (!el) {
+    delete branchPagingRefs[id]
+  }
+}
+/**
+ * 获取一级子评论列表
+ * @param {Number} id 根评论id
+ * @param {Number} page 当前页码
+ * @param {Number} pageSize 页容量
+ */
+const getBranchCommentList = async (id, page, pageSize) => {
+  await nextTick() // 等待ref更新
+  console.log('request-branch', id, page, pageSize)
+  // 控制加载状态
+  const index = rootCommentList.value.findIndex((item) => item.id === id)
+  if (index !== -1) rootCommentList.value[index].loading = true
+
+  try {
+    const { records, total } = await getCommentListAPI(
+      props.id,
+      page,
+      pageSize,
+      id
+    )
+    branchPagingRefs[id].completeByTotal(records, total)
+  } catch {
+    branchPagingRefs[id].completeByTotal(false)
+  } finally {
+    commentStore.completeLoadComment()
+    if (index !== -1) rootCommentList.value[index].loading = false
+  }
 }
 </script>
 
 <template>
   <common-paging
     v-model="rootCommentList"
-    ref="pagingRef"
+    ref="rootPagingRef"
     position="right"
     :page-size="10"
     @on-load="(page, pageSize) => getRootCommentList(page, pageSize)"
   >
-    <div class="comment-list root">
-      <comment-card
-        v-for="item in rootCommentList"
-        :key="item.id"
-        :detail="item"
-        :root-id="item.fatherId"
-        @reply="(parentId, id) => handleReply(item.fatherId, parentId, id)"
-      ></comment-card>
+    <!-- 一级评论 -->
+    <div class="comment-list">
+      <div class="root-comment" v-for="root in rootCommentList" :key="root.id">
+        <comment-card
+          :detail="root"
+          @load="(id) => activeBranch(id)"
+        ></comment-card>
+
+        <template v-if="root.children">
+          <!-- 二级评论 -->
+          <common-paging
+            v-model="root.children"
+            :ref="(el) => setBranchPagingRef(el, root.id)"
+            :page-size="5"
+            small
+            style="margin-top: 20px; padding-left: 60px"
+            @on-load="
+              (page, pageSize) => getBranchCommentList(root.id, page, pageSize)
+            "
+          >
+            <div class="comment-list" v-loading="root.loading">
+              <div
+                class="branch-comment"
+                v-for="branch in root.children"
+                :key="branch.id"
+              >
+                <comment-card :detail="branch"></comment-card>
+              </div>
+            </div>
+          </common-paging>
+        </template>
+      </div>
     </div>
   </common-paging>
 </template>
@@ -64,6 +127,6 @@ const handleReply = (rootId, parentId, id) => {
 .comment-list {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 40px;
 }
 </style>
