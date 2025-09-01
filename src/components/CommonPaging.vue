@@ -103,6 +103,7 @@ defineExpose({ completeByTotal, reload })
         background
         layout="prev, pager, next"
         :small="small"
+        :pager-count="5"
         v-model:current-page="page"
         :default-page-size="pageSize"
         :total="total"
@@ -121,7 +122,9 @@ defineExpose({ completeByTotal, reload })
 
   .pagination {
     display: flex;
+    width: 100%;
     margin-top: 20px;
+    overflow: hidden;
   }
 }
 </style>

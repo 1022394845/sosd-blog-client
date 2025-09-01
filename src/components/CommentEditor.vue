@@ -28,7 +28,15 @@ const reset = (status = true) => {
     inputRef.value.blur()
   }
 }
-defineExpose({ reset })
+
+/**
+ * 手动设置聚焦状态
+ */
+const focus = () => {
+  if (inputRef.value) inputRef.value.focus()
+}
+
+defineExpose({ reset, focus })
 </script>
 
 <template>
@@ -116,6 +124,7 @@ defineExpose({ reset })
 
   .need-login {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     width: 100%;

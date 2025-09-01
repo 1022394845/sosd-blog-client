@@ -4,6 +4,9 @@ import { getCommentListAPI } from '@/apis/article'
 import { ref, useTemplateRef } from 'vue'
 import CommonPaging from '../CommonPaging.vue'
 import CommentCard from './components/CommentCard.vue'
+import { useCommentStore } from '@/stores/comment'
+
+const commentStore = useCommentStore()
 
 const props = defineProps({
   id: {
@@ -25,6 +28,16 @@ const getRootCommentList = async (page, pageSize) => {
     pagingRef.value.completeByTotal(false)
   }
 }
+
+/**
+ * 回复评论
+ * @param {Number} rootId 回复评论的根评论id
+ * @param {Number} parentId 回复评论的父评论id
+ * @param {Number} id 回复评论的id
+ */
+const handleReply = (rootId, parentId, id) => {
+  commentStore.handleReply(rootId, parentId, id)
+}
 </script>
 
 <template>
@@ -40,6 +53,8 @@ const getRootCommentList = async (page, pageSize) => {
         v-for="item in rootCommentList"
         :key="item.id"
         :detail="item"
+        :root-id="item.fatherId"
+        @reply="(parentId, id) => handleReply(item.fatherId, parentId, id)"
       ></comment-card>
     </div>
   </common-paging>
