@@ -5,6 +5,7 @@ import { useUserStore } from '@/stores/user'
 import { useTemplateRef } from 'vue'
 import { publishCommentAPI } from '@/apis/article'
 import { showMsg } from '@/utils/common'
+import CommentList from '@/components/CommentList/CommentList.vue'
 
 const userStore = useUserStore()
 
@@ -42,6 +43,9 @@ const handelPublish = async (value) => {
         ></comment-editor>
       </div>
     </div>
+    <section class="comment-list">
+      <comment-list :id="id"></comment-list>
+    </section>
   </div>
 </template>
 

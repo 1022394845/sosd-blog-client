@@ -26,7 +26,7 @@ let total = null
 const status = ref(0) // 0-待加载 1-暂无更多 2-加载异常
 const handleNextPage = () => {
   if (status.value === 1) return observer.disconnect() // 没有更多页
-  if (status.value === 2) return // 加载异常 等待手动调用
+  if (status.value === 2) return // 加载异常 等待手动恢复
   page++ // 下一页
   emits('onLoad', page, pageSize)
 }
@@ -86,9 +86,9 @@ defineExpose({ completeByTotal, reload })
       </template>
       <template v-else-if="status === 1">暂无更多</template>
       <template v-else>
-        <el-button size="small" @click="handleResume"
-          >加载失败，重新加载</el-button
-        >
+        <el-button size="small" @click="handleResume">
+          加载失败，重新加载
+        </el-button>
       </template>
     </div>
   </div>

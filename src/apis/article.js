@@ -63,3 +63,20 @@ export const publishCommentAPI = (
     content,
     parentCommentId
   })
+
+/**
+ * 分级获取文章评论
+ * @param {Number} articleId 文章id
+ * @param {Number} page 当前页码
+ * @param {Number} pageSize 页容量
+ * @param {Number} [parentCommentId] 父评论id 根评论为-1
+ */
+export const getCommentListAPI = (
+  articleId,
+  page,
+  pageSize,
+  parentCommentId = -1
+) =>
+  request.get('/users/article/detail/comments', {
+    params: { articleId, page, pageSize, parentCommentId }
+  })
