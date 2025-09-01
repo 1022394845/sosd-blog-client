@@ -102,9 +102,10 @@ const handleCommand = async (command) => {
           <el-dropdown
             @command="(command) => handleCommand(command)"
             placement="bottom-end"
+            class="header-dropdown"
           >
             <template #default>
-              <el-avatar class="header-avatar" fit="fill">
+              <el-avatar class="avatar" fit="fill">
                 <el-image
                   v-if="userStore.userInfo.image"
                   :src="userStore.userInfo.image"
@@ -176,17 +177,23 @@ const handleCommand = async (command) => {
     .header-search {
       min-width: 130px;
       max-width: 300px;
+      @include hide-below(310px);
     }
 
     .header-user-center {
       @include hide-below(635px);
     }
 
-    .header-avatar {
-      width: 35px;
-      height: 35px;
-      font-size: 18px;
-      cursor: pointer;
+    .header-dropdown {
+      margin-left: auto;
+
+      .avatar {
+        width: 35px;
+        height: 35px;
+        margin-left: auto;
+        font-size: 18px;
+        cursor: pointer;
+      }
     }
   }
 }
