@@ -1,6 +1,9 @@
 <script setup>
 // 评论编辑器
+import { useUserStore } from '@/stores/user'
 import { ref, computed, useTemplateRef } from 'vue'
+
+const userStore = useUserStore()
 
 const emits = defineEmits(['submit'])
 
@@ -30,34 +33,46 @@ defineExpose({ reset })
 
 <template>
   <div class="comment-editor">
-    <el-input
-      v-model="inputValue"
-      class="input"
-      ref="inputRef"
-      type="textarea"
-      placeholder="友善表达，平等交流"
-      resize="none"
-      autosize
-      :maxlength="200"
-      show-word-limit
-      :input-style="{
-        border: 'none',
-        backgroundColor: 'transparent',
-        boxShadow: 'none',
-        color: '#000000',
-        transition: 'all 0.3s'
-      }"
-    ></el-input>
-    <div class="operation">
-      <el-button
-        type="primary"
-        :disabled="disabledSubmit"
-        :loading="loading"
-        @click="onSubmit"
-      >
-        发表
-      </el-button>
-    </div>
+    <template v-if="userStore.userInfo.id">
+      <el-input
+        v-model="inputValue"
+        class="input"
+        ref="inputRef"
+        type="textarea"
+        placeholder="友善表达，平等交流"
+        resize="none"
+        autosize
+        :maxlength="200"
+        show-word-limit
+        :input-style="{
+          border: 'none',
+          backgroundColor: 'transparent',
+          boxShadow: 'none',
+          color: '#000000',
+          transition: 'all 0.3s'
+        }"
+      ></el-input>
+      <div class="operation">
+        <el-button
+          type="primary"
+          :disabled="disabledSubmit"
+          :loading="loading"
+          @click="onSubmit"
+        >
+          发表
+        </el-button>
+      </div>
+    </template>
+
+    <!-- 未登录状态 -->
+    <template v-else>
+      <div class="need-login" v-need-login>
+        <el-button type="primary" size="small" style="margin-right: 10px">
+          登录 / 注册
+        </el-button>
+        即可发表评论
+      </div>
+    </template>
   </div>
 </template>
 
@@ -97,6 +112,15 @@ defineExpose({ reset })
     align-items: center;
     gap: 20px;
     margin-top: 15px;
+  }
+
+  .need-login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 80px;
+    user-select: none;
   }
 }
 </style>
