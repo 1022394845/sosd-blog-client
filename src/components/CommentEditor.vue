@@ -1,15 +1,31 @@
 <script setup>
 // 评论编辑器
-import { ref, computed } from 'vue'
+import { ref, computed, useTemplateRef } from 'vue'
 
 const emits = defineEmits(['submit'])
 
 const inputValue = ref('')
 const disabledSubmit = computed(() => inputValue.value.length === 0)
 
+const loading = ref(false)
 const onSubmit = () => {
+  loading.value = true
   emits('submit', inputValue.value)
 }
+
+const inputRef = useTemplateRef('inputRef')
+/**
+ * 重置状态 可用于提交回调后重置
+ * @param {Boolean} [status] 回调是否成功 默认true
+ */
+const reset = (status = true) => {
+  loading.value = false
+  if (inputRef.value && status) {
+    inputRef.value.clear()
+    inputRef.value.blur()
+  }
+}
+defineExpose({ reset })
 </script>
 
 <template>
@@ -17,6 +33,7 @@ const onSubmit = () => {
     <el-input
       v-model="inputValue"
       class="input"
+      ref="inputRef"
       type="textarea"
       placeholder="友善表达，平等交流"
       resize="none"
@@ -32,7 +49,12 @@ const onSubmit = () => {
       }"
     ></el-input>
     <div class="operation">
-      <el-button type="primary" :disabled="disabledSubmit" @click="onSubmit">
+      <el-button
+        type="primary"
+        :disabled="disabledSubmit"
+        :loading="loading"
+        @click="onSubmit"
+      >
         发表
       </el-button>
     </div>

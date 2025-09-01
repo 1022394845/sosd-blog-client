@@ -43,3 +43,23 @@ export const getArticleDetailAPI = (id) =>
  */
 export const getArticleAbstractAPI = (id) =>
   request.get('/users/article/detail/ai', { params: { id } })
+
+/**
+ * 发表/回复评论
+ * @param {Number} articleId 文章id
+ * @param {Number} userId 发表者id
+ * @param {String} content 评论内容
+ * @param {Number} [parentCommentId] 父评论id 根评论不传
+ */
+export const publishCommentAPI = (
+  articleId,
+  userId,
+  content,
+  parentCommentId
+) =>
+  request.post('/users/article/detail/comments', {
+    articleId,
+    userId,
+    content,
+    parentCommentId
+  })

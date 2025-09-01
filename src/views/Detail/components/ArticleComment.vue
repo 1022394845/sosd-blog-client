@@ -2,6 +2,9 @@
 import CommonAvatar from '@/components/CommonAvatar.vue'
 import CommentEditor from '@/components/CommentEditor.vue'
 import { useUserStore } from '@/stores/user'
+import { useTemplateRef } from 'vue'
+import { publishCommentAPI } from '@/apis/article'
+import { showMsg } from '@/utils/common'
 
 const userStore = useUserStore()
 
@@ -12,6 +15,17 @@ const props = defineProps({
     required: true
   }
 })
+
+const publishRef = useTemplateRef('publishRef')
+const handelPublish = async (value) => {
+  try {
+    await publishCommentAPI(props.id, userStore.userInfo.id, value)
+    showMsg('发表成功', 'success')
+    publishRef.value.reset()
+  } catch {
+    publishRef.value.reset(false)
+  }
+}
 </script>
 
 <template>
@@ -22,7 +36,10 @@ const props = defineProps({
         <common-avatar :src="userStore.userInfo.image"></common-avatar>
       </div>
       <div class="editor">
-        <comment-editor></comment-editor>
+        <comment-editor
+          ref="publishRef"
+          @submit="(value) => handelPublish(value)"
+        ></comment-editor>
       </div>
     </div>
   </div>
