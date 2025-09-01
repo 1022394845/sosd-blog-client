@@ -8,6 +8,7 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import vueDompurifyHTMLPlugin from 'vue-dompurify-html'
 
 import { needLogin } from './directives/login'
+import typewrite from './directives/typewriter'
 
 import '@/styles/common.scss'
 import '@/static/iconfont/iconfont.css'
@@ -22,5 +23,6 @@ app.use(router)
 app.use(vueDompurifyHTMLPlugin)
 
 app.directive('need-login', needLogin)
+app.directive('typewrite', typewrite)
 
 app.mount('#app')

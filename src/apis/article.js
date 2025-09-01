@@ -36,3 +36,10 @@ export const getSearchListAPI = (page, pageSize, config = {}) =>
  */
 export const getArticleDetailAPI = (id) =>
   request.get('/users/article/detail', { params: { id } })
+
+/**
+ * 获取文章AI总结
+ * @param {Number} id 文章id
+ */
+export const getArticleAbstractAPI = (id) =>
+  request.get('/users/article/detail/ai', { params: { id } })

@@ -1,7 +1,7 @@
 <script setup>
 import DotLoading from '@/components/DotLoading.vue'
 import RichText from '@/components/RichText.vue'
-import { getArticleDetailAPI } from '@/apis/article'
+import { getArticleAbstractAPI, getArticleDetailAPI } from '@/apis/article'
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -10,8 +10,6 @@ const articleId = route.query.id || null
 
 const detail = ref({}) // 文章详情
 const detailLoading = ref(true)
-const abstract = ref('') // AI总结
-const abstractLoading = ref(true)
 const getDetail = async () => {
   if (articleId === null) return
   detailLoading.value = true
@@ -19,8 +17,20 @@ const getDetail = async () => {
   detail.value = data
   detailLoading.value = false
 }
-onMounted(() => {
-  getDetail()
+
+const abstract = ref('') // AI总结
+const abstractLoading = ref(true)
+const getAbstract = async () => {
+  if (articleId === null) return
+  abstractLoading.value = true
+  const data = await getArticleAbstractAPI(articleId)
+  abstract.value = data
+  abstractLoading.value = false
+}
+
+onMounted(async () => {
+  await getDetail()
+  getAbstract()
 })
 </script>
 
@@ -46,7 +56,7 @@ onMounted(() => {
               <span v-if="abstractLoading" style="display: inline-block">
                 <dot-loading>加载中</dot-loading>
               </span>
-              <template v-else>{{ abstract }}</template>
+              <span v-else v-typewrite="{ speed: 50 }">{{ abstract }}</span>
             </p>
           </section>
         </header>
