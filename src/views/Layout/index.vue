@@ -2,7 +2,6 @@
 import { ref } from 'vue'
 import {
   Search,
-  UserFilled,
   User,
   Document,
   Star,
@@ -13,6 +12,7 @@ import { openLogin } from '@/directives/login'
 import { useUserStore } from '@/stores/user'
 import { showConfirm, showMsg } from '@/utils/common'
 import { useRouter } from 'vue-router'
+import CommonAvatar from '@/components/CommonAvatar.vue'
 
 const userStore = useUserStore()
 
@@ -105,18 +105,7 @@ const handleCommand = async (command) => {
             class="header-dropdown"
           >
             <template #default>
-              <el-avatar class="avatar" fit="fill">
-                <el-image
-                  v-if="userStore.userInfo.image"
-                  :src="userStore.userInfo.image"
-                  fit="fill"
-                >
-                  <template #error>
-                    <el-icon><UserFilled /></el-icon>
-                  </template>
-                </el-image>
-                <el-icon v-else><UserFilled /></el-icon>
-              </el-avatar>
+              <common-avatar :stc="userStore.userInfo.image"></common-avatar>
             </template>
             <template #dropdown>
               <el-dropdown-menu>
@@ -186,14 +175,6 @@ const handleCommand = async (command) => {
 
     .header-dropdown {
       margin-left: auto;
-
-      .avatar {
-        width: 35px;
-        height: 35px;
-        margin-left: auto;
-        font-size: 18px;
-        cursor: pointer;
-      }
     }
   }
 }
