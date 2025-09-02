@@ -1,9 +1,9 @@
 <script setup>
-import { useRouter, useRoute } from 'vue-router'
+import { useRoute } from 'vue-router'
+import { computed } from 'vue'
 
 const route = useRoute()
-const router = useRouter()
-const defaultActive = route.name || 'profile'
+const activeMenu = computed(() => `/user/${route.name}`)
 
 const routerList = [
   { label: 'profile', name: '个人信息' },
@@ -11,10 +11,6 @@ const routerList = [
   { label: 'star', name: '我的收藏' },
   { label: 'history', name: '历史足迹' }
 ]
-
-const handelChangeRouter = (index) => {
-  router.replace(`/user/${index}`)
-}
 </script>
 
 <template>
@@ -24,9 +20,9 @@ const handelChangeRouter = (index) => {
         <el-scrollbar max-height="calc(100vh - 180px)">
           <el-menu
             class="router-nav"
-            :default-active="defaultActive"
+            :default-active="activeMenu"
             text-color="#515767"
-            @select="(index) => handelChangeRouter(index)"
+            router
           >
             <el-button
               type="primary"
@@ -38,7 +34,7 @@ const handelChangeRouter = (index) => {
             <el-menu-item
               v-for="item in routerList"
               :key="item.label"
-              :index="item.label"
+              :index="`/user/${item.label}`"
             >
               <span class="iconfont" :class="`icon-${item.label}`"></span>
               <span style="margin-left: 24px">{{ item.name }}</span>

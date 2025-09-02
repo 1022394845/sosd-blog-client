@@ -1,7 +1,8 @@
 <script setup>
 // 文章分类导航
 import { useArticleStore } from '@/stores/article'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
+import { computed } from 'vue'
 
 const { categoryList } = useArticleStore()
 
@@ -14,30 +15,22 @@ defineProps({
 })
 
 const route = useRoute()
-const router = useRouter()
-const defaultActive = route.params.category || 'recommended'
-
-const handelChangeCategory = (index) => {
-  router.replace(`/home/${index}`)
-}
+const activeMenu = computed(() => `/home/${route.params.category}`)
 </script>
 
 <template>
-  <el-scrollbar
-    max-height="calc(100vh - 100px)"
-    :wrap-style="{ width: '100%' }"
-  >
+  <el-scrollbar max-height="calc(100vh - 100px)">
     <el-menu
       class="category-nav"
-      :default-active="defaultActive"
+      :default-active="activeMenu"
       :mode="mode"
       text-color="#515767"
-      @select="(index) => handelChangeCategory(index)"
+      router
     >
       <el-menu-item
         v-for="item in categoryList"
         :key="item.id"
-        :index="item.label"
+        :index="`/home/${item.label}`"
       >
         <span class="iconfont" :class="`icon-${item.label}`"></span>
         <span style="margin-left: 12px">{{ item.name }}</span>

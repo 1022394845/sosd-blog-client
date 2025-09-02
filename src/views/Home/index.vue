@@ -1,5 +1,5 @@
 <script setup>
-import AsideNavigator from './components/AsideNavigator.vue'
+import CategoryNavigator from './components/CategoryNavigator.vue'
 import HotList from './components/HotList.vue'
 import ArticleList from '@/components/ArticleList.vue'
 import { useRoute } from 'vue-router'
@@ -22,12 +22,12 @@ watch(
 <template>
   <div class="page-container">
     <header class="top-nav">
-      <aside-navigator mode="horizontal"></aside-navigator>
+      <category-navigator mode="horizontal"></category-navigator>
     </header>
 
     <div class="wrapper">
       <aside class="aside-nav">
-        <aside-navigator></aside-navigator>
+        <category-navigator></category-navigator>
       </aside>
       <main class="article-section">
         <article-list
@@ -64,6 +64,7 @@ watch(
     .aside-nav {
       position: sticky;
       top: 80px;
+      width: 180px;
       height: fit-content;
       margin-right: 20px;
       @include hide-below(1220px);

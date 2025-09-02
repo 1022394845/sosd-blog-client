@@ -8,7 +8,7 @@ const router = createRouter({
     {
       path: '/',
       component: Layout,
-      redirect: '/home',
+      redirect: '/home/recommended',
       children: [
         {
           path: 'home/:category?',

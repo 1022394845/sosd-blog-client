@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import {
   Search,
   User,
@@ -11,20 +11,22 @@ import {
 import { openLogin } from '@/directives/login'
 import { useUserStore } from '@/stores/user'
 import { showConfirm, showMsg } from '@/utils/common'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import CommonAvatar from '@/components/CommonAvatar.vue'
 
 const userStore = useUserStore()
 
+const route = useRoute()
 const router = useRouter()
+const activeMenu = computed(() => route.matched?.[0].path)
 
 // 头部导航
 const headerNavList = [
-  { label: '首页', index: '/home', disabled: false },
-  { label: '热点', index: '/', disabled: true },
-  { label: '直播', index: '/', disabled: true },
-  { label: '课程', index: '/', disabled: true },
-  { label: '活动', index: '/', disabled: true }
+  { label: '首页', index: '/', disabled: false },
+  { label: '热点', index: '/hot', disabled: true },
+  { label: '直播', index: '/livestream', disabled: true },
+  { label: '课程', index: '/course', disabled: true },
+  { label: '活动', index: '/activity', disabled: true }
 ]
 
 // 头部搜索
@@ -76,7 +78,7 @@ const handleCommand = async (command) => {
           <!-- 导航 -->
           <el-menu
             class="header-nav"
-            default-active="/home"
+            :default-active="activeMenu"
             router
             mode="horizontal"
           >
