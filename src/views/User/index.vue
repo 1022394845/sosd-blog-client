@@ -1,6 +1,5 @@
 <script setup>
-import { useRouter } from 'vue-router'
-import { useRoute } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 
 const route = useRoute()
 const router = useRouter()

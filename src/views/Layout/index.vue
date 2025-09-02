@@ -38,11 +38,10 @@ const onSearch = () => {
 
 /**
  * 前往用户页面
- * @param {String} command 指定跳转页
+ * @param {String} command 指定跳转页 默认profile
  */
-const goUser = (command) => {
-  if (command) router.push(`/user/${command}`)
-  else router.push('/user')
+const goUser = (command = 'profile') => {
+  router.push(`/user/${command}`)
 }
 
 // 头部下拉菜单
