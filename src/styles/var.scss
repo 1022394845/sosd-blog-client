@@ -7,15 +7,15 @@ $sosd-main-color-5:#ffc761;
 $sosd-main-color-6:#f9f871;
 
 // 指令
-// 当视口宽度小于$width时隐藏元素
+// 当视口宽度不大于$width时隐藏元素
 @mixin hide-below($width) {
   @media (max-width: $width) {
-    display: none !important;
+    display: none;
   }
 }
-// 当视口宽度小于$width时显示元素
-@mixin show-below($width) {
-  @media (max-width: $width) {
-    display: revert !important;
+// 当视口宽度大于$width时隐藏元素
+@mixin hide-above($width) {
+  @media (min-width: calc($width + 1px)) {
+    display: none;
   }
 }

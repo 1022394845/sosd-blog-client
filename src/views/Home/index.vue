@@ -21,47 +21,69 @@ watch(
 
 <template>
   <div class="page-container">
-    <aside class="aside-nav">
-      <aside-navigator></aside-navigator>
-    </aside>
-    <main class="article-section">
-      <article-list
-        ref="articleListRef"
-        :type="0"
-        :category="category"
-      ></article-list>
-    </main>
-    <aside class="aside-section">
-      <hot-list></hot-list>
-    </aside>
+    <header class="top-nav">
+      <aside-navigator mode="horizontal"></aside-navigator>
+    </header>
+
+    <div class="wrapper">
+      <aside class="aside-nav">
+        <aside-navigator></aside-navigator>
+      </aside>
+      <main class="article-section">
+        <article-list
+          ref="articleListRef"
+          :type="0"
+          :category="category"
+        ></article-list>
+      </main>
+      <aside class="aside-section">
+        <hot-list></hot-list>
+      </aside>
+    </div>
   </div>
 </template>
 
 <style scoped lang="scss">
 .page-container {
-  display: flex;
-  justify-content: space-between;
   width: 100%;
 
-  .aside-nav {
+  .top-nav {
     position: sticky;
-    top: 80px;
-    height: fit-content;
-    margin-right: 20px;
-    @include hide-below(1220px);
+    top: 60px;
+    z-index: 9999;
+    width: min(100%, 95vw);
+    overflow: hidden;
+    margin-bottom: 10px;
+    @include hide-above(1220px);
   }
 
-  .article-section {
-    flex-shrink: 0;
-    width: min(720px, 95vw);
-  }
+  .wrapper {
+    display: flex;
+    justify-content: space-between;
 
-  .aside-section {
-    position: sticky;
-    top: 80px;
-    height: fit-content;
-    margin-left: 20px;
-    @include hide-below(1000px);
+    .aside-nav {
+      position: sticky;
+      top: 80px;
+      height: fit-content;
+      margin-right: 20px;
+      @include hide-below(1220px);
+    }
+
+    .article-section {
+      flex-shrink: 0;
+      width: min(720px, 95vw);
+    }
+
+    .aside-section {
+      position: sticky;
+      top: 80px;
+      height: fit-content;
+      margin-left: 20px;
+      @media (max-width: 1220px) {
+        top: 130px;
+      }
+      @include hide-below(1053px);
+    }
   }
 }
 </style>

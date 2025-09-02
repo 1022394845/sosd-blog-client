@@ -5,6 +5,14 @@ import { useRoute, useRouter } from 'vue-router'
 
 const { categoryList } = useArticleStore()
 
+defineProps({
+  mode: {
+    // 导航方向 垂直-vertical 水平-horizontal 默认垂直
+    type: String,
+    default: 'vertical'
+  }
+})
+
 const route = useRoute()
 const router = useRouter()
 const defaultActive = route.params.category || 'recommended'
@@ -15,10 +23,14 @@ const handelChangeCategory = (index) => {
 </script>
 
 <template>
-  <el-scrollbar max-height="calc(100vh - 100px)">
+  <el-scrollbar
+    max-height="calc(100vh - 100px)"
+    :wrap-style="{ width: '100%' }"
+  >
     <el-menu
       class="category-nav"
       :default-active="defaultActive"
+      :mode="mode"
       text-color="#515767"
       @select="(index) => handelChangeCategory(index)"
     >
@@ -36,7 +48,7 @@ const handelChangeCategory = (index) => {
 
 <style lang="scss" scoped>
 .category-nav {
-  width: 180px;
+  width: 100%;
   border-radius: 4px;
   padding: 8px;
   border-right: none;

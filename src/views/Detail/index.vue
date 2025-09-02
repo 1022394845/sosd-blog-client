@@ -43,10 +43,9 @@ const goComment = () => {
   }
 
   .panel-row {
-    display: none;
     width: fit-content;
     margin: 20px auto;
-    @include show-below(1050px);
+    @include hide-above(1050px);
   }
 }
 </style>
