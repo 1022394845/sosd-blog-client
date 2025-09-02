@@ -185,7 +185,7 @@ const onSubmit = async () => {
           ref="formRef"
           :model="formData"
           :rules="rules"
-          :label-width="formOption === 0 ? '40px' : '70px'"
+          :label-width="formOption === 0 ? '50px' : '70px'"
           hide-required-asterisk
         >
           <el-form-item
