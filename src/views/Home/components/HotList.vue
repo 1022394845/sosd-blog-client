@@ -32,10 +32,14 @@ onMounted(() => {
             v-for="(item, index) in hotList"
             :key="index"
           >
-            <a :href="`/detail/id=${item.id}`" class="list-item">
+            <router-link
+              :to="`/detail?id=${item.id}`"
+              target="_blank"
+              class="list-item"
+            >
               <div class="list-item-index">{{ index + 1 }}</div>
               <div class="list-item-title ellipsis">{{ item.title }}</div>
-            </a>
+            </router-link>
           </li>
         </ul>
       </el-scrollbar>
