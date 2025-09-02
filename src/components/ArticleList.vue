@@ -12,7 +12,7 @@ const props = defineProps({
     type: Number,
     required: true
   },
-  category: String, // 筛选分类
+  categoryId: Number, // 筛选分类id
   title: String, // 搜索标题
   tag: String, // 搜索标签
   highlight: String // 高亮关键词

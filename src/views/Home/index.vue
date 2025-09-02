@@ -3,20 +3,23 @@ import CategoryNavigator from './components/CategoryNavigator.vue'
 import HotList from './components/HotList.vue'
 import ArticleList from '@/components/ArticleList.vue'
 import { useRoute } from 'vue-router'
-import { ref, watch, useTemplateRef } from 'vue'
+import { computed, watch, useTemplateRef, nextTick } from 'vue'
+import { useArticleStore } from '@/stores/article'
+
+const { categoryList } = useArticleStore()
 
 const articleListRef = useTemplateRef('articleListRef')
 
 // 筛选分类
 const route = useRoute()
-const category = ref(route.params.category || undefined)
-watch(
-  () => route.params.category,
-  (newValue) => {
-    category.value = newValue
-    articleListRef.value.reload()
-  }
+const categoryId = computed(
+  () => categoryList.find((item) => item.label === route.params.category).id
 )
+watch(categoryId, () => {
+  nextTick(() => {
+    articleListRef.value.reload()
+  })
+})
 </script>
 
 <template>
@@ -33,7 +36,7 @@ watch(
         <article-list
           ref="articleListRef"
           :type="0"
-          :category="category"
+          :category-id="categoryId"
         ></article-list>
       </main>
       <aside class="aside-section">

@@ -10,7 +10,7 @@ export const getHotListAPI = () => request.get('/user/homepage/hot')
  * @param {Number} page 当前页码
  * @param {Number} pageSize 页容量
  * @param {Object} [config] 额外配置项
- * @param {String} config.category 筛选分类
+ * @param {String} config.categoryId 筛选分类id
  */
 export const getHomeArticleListAPI = (page, pageSize, config = {}) =>
   request.get('/user/homepage/articles', {
