@@ -2,25 +2,19 @@
 import CommonAvatar from '@/components/CommonAvatar.vue'
 import CommentEditor from '@/components/CommentEditor.vue'
 import { useUserStore } from '@/stores/user'
-import { useTemplateRef } from 'vue'
+import { useTemplateRef, inject } from 'vue'
 import { publishCommentAPI } from '@/apis/article'
 import { showMsg } from '@/utils/common'
 import CommentList from '@/components/CommentList/CommentList.vue'
 
 const userStore = useUserStore()
 
-const props = defineProps({
-  id: {
-    // 文章id
-    type: Number,
-    required: true
-  }
-})
+const articleId = inject('articleId')
 
 const publishRef = useTemplateRef('publishRef')
 const handelPublish = async (value) => {
   try {
-    await publishCommentAPI(props.id, userStore.userInfo.id, value)
+    await publishCommentAPI(articleId, userStore.userInfo.id, value)
     showMsg('发表成功', 'success')
     publishRef.value.reset()
   } catch {
@@ -47,7 +41,7 @@ const handelPublish = async (value) => {
       </div>
     </div>
     <section class="comment-list">
-      <comment-list :id="id"></comment-list>
+      <comment-list :id="articleId"></comment-list>
     </section>
   </div>
 </template>

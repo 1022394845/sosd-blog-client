@@ -3,24 +3,18 @@
 import DotLoading from '@/components/DotLoading.vue'
 import RichText from '@/components/RichText.vue'
 import { getArticleAbstractAPI, getArticleDetailAPI } from '@/apis/article'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, inject } from 'vue'
 
-const props = defineProps({
-  id: {
-    // 文章id
-    type: Number,
-    required: true
-  }
-})
+const articleId = inject('articleId') // 文章id
 // 通知父组件内容加载完毕，可以开始加载评论
 const emits = defineEmits(['success'])
 
 const detail = ref({}) // 文章详情
 const detailLoading = ref(true)
 const getDetail = async () => {
-  if (props.id === null) return
+  if (articleId === null) return
   detailLoading.value = true
-  const data = await getArticleDetailAPI(props.id)
+  const data = await getArticleDetailAPI(articleId)
   detail.value = data
   detailLoading.value = false
 }
@@ -28,10 +22,10 @@ const getDetail = async () => {
 const abstract = ref('') // AI总结
 const abstractLoading = ref(true)
 const getAbstract = async () => {
-  if (props.id === null) return
+  if (articleId === null) return
   try {
     abstractLoading.value = true
-    const data = await getArticleAbstractAPI(props.id)
+    const data = await getArticleAbstractAPI(articleId)
     abstract.value = data
   } catch {
     abstract.value = '加载失败'
