@@ -2,14 +2,28 @@
 // 文章详情数据操作板
 import CommonAvatar from '@/components/CommonAvatar.vue'
 import { useArticleStore } from '@/stores/article'
+import { useUserStore } from '@/stores/user'
+import { inject } from 'vue'
 
 const articleStore = useArticleStore()
+const userStore = useUserStore()
 
+const articleId = inject('articleId')
 const emits = defineEmits(['comment'])
 
 // 前往评论
 const goComment = () => {
   emits('comment')
+}
+
+// 切换点赞状态
+const toggleLike = () => {
+  articleStore.toggleLikeStatus(userStore.getCurrentUserId(), articleId)
+}
+
+// 切换收藏状态
+const toggleStar = () => {
+  articleStore.toggleStarStatus(userStore.getCurrentUserId(), articleId)
 }
 </script>
 
@@ -27,6 +41,7 @@ const goComment = () => {
       :value="articleStore.currentArticleData.likeNumber"
       :max="999"
       type="info"
+      v-need-login="toggleLike"
     >
       <div class="iconfont icon-like_fill"></div>
     </el-badge>
@@ -45,6 +60,7 @@ const goComment = () => {
       :value="articleStore.currentArticleData.favoriteNumber"
       :max="999"
       type="info"
+      v-need-login="toggleStar"
     >
       <div class="iconfont icon-star_fill"></div>
     </el-badge>

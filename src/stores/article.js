@@ -1,3 +1,8 @@
+import {
+  toggleArticleLikeStatusAPI,
+  toggleArticleStarStatusAPI
+} from '@/apis/article'
+import { debounce } from '@/utils/debounce'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
@@ -38,6 +43,8 @@ export const useArticleStore = defineStore('article', () => {
 
   // 当前查看文章看板数据
   const currentArticleData = ref({})
+  let lastLikeStatus = null
+  let lastStarStatus = null // 用于避免重复点赞/收藏
   /**
    * 初始化当前文章数据
    * @param {Object} data 获取的文章详情数据
@@ -51,6 +58,8 @@ export const useArticleStore = defineStore('article', () => {
    */
   function initCurrentArticle(data = {}) {
     currentArticleData.value = data
+    lastLikeStatus = data.isLike
+    lastStarStatus = data.isFavorite
   }
 
   /**
@@ -64,10 +73,65 @@ export const useArticleStore = defineStore('article', () => {
     }
   }
 
+  /**
+   * 切换点赞状态API 防抖1s
+   * @param {Number} userId 用户id
+   * @param {Number} articleId 文章id
+   * @param {Boolean} status 更新状态
+   */
+  const toggleLikeStatusAPI = debounce(async (userId, articleId, status) => {
+    if (status === lastLikeStatus) return // 状态改变时才执行API
+    await toggleArticleLikeStatusAPI(userId, articleId, status)
+    lastLikeStatus = status // 更新状态
+  }, 1000)
+
+  /**
+   * 切换点赞状态
+   * @param {Number} userId 用户id
+   * @param {Number} articleId 文章id
+   */
+  function toggleLikeStatus(userId, articleId) {
+    if (typeof currentArticleData.value.likeNumber === 'number') {
+      if (currentArticleData.value.isLike) currentArticleData.value.likeNumber--
+      else currentArticleData.value.likeNumber++
+    }
+    currentArticleData.value.isLike = !currentArticleData.value.isLike
+    toggleLikeStatusAPI(userId, articleId, currentArticleData.value.isLike)
+  }
+
+  /**
+   * 切换收藏状态API 防抖1s
+   * @param {Number} userId 用户id
+   * @param {Number} articleId 文章id
+   * @param {Boolean} status 更新状态
+   */
+  const toggleStarStatusAPI = debounce(async (userId, articleId, status) => {
+    if (status === lastStarStatus) return // 状态改变时才执行API
+    await toggleArticleStarStatusAPI(userId, articleId, status)
+    lastStarStatus = status // 更新状态
+  }, 1000)
+
+  /**
+   * 切换收藏状态
+   * @param {Number} userId 用户id
+   * @param {Number} articleId 文章id
+   */
+  function toggleStarStatus(userId, articleId) {
+    if (typeof currentArticleData.value.favoriteNumber === 'number') {
+      if (currentArticleData.value.isFavorite)
+        currentArticleData.value.favoriteNumber--
+      else currentArticleData.value.favoriteNumber++
+    }
+    currentArticleData.value.isFavorite = !currentArticleData.value.isFavorite
+    toggleStarStatusAPI(userId, articleId, currentArticleData.value.isFavorite)
+  }
+
   return {
     categoryList,
     currentArticleData,
     initCurrentArticle,
-    updateCommentNumber
+    updateCommentNumber,
+    toggleLikeStatus,
+    toggleStarStatus
   }
 })

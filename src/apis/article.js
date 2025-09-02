@@ -81,3 +81,41 @@ export const getCommentListAPI = (
   request.get('/users/article/detail/comments', {
     params: { articleId, page, pageSize, parentCommentId }
   })
+
+/**
+ * 点赞文章
+ * @param {Number} userId 用户id
+ * @param {Number} articleId 文章id
+ * @param {Boolean} status 改变后的状态
+ */
+export const toggleArticleLikeStatusAPI = (userId, articleId, status) => {
+  if (status)
+    return request.post(
+      '/users/article/detail/likes',
+      {},
+      { params: { userId, articleId } }
+    )
+  else
+    return request.delete('/users/article/detail/likes', {
+      params: { userId, articleId }
+    })
+}
+
+/**
+ * 收藏文章
+ * @param {Number} userId 用户id
+ * @param {Number} articleId 文章id
+ * @param {Boolean} status 改变后的状态
+ */
+export const toggleArticleStarStatusAPI = (userId, articleId, status) => {
+  if (status)
+    return request.post(
+      '/users/article/detail/favorites',
+      {},
+      { params: { userId, articleId } }
+    )
+  else
+    return request.delete('/users/article/detail/favorites', {
+      params: { userId, articleId }
+    })
+}
