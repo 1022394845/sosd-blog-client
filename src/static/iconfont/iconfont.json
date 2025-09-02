@@ -6,6 +6,34 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "1368560",
+      "name": "历史",
+      "font_class": "history",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    },
+    {
+      "icon_id": "12875002",
+      "name": "user",
+      "font_class": "profile",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "2471395",
+      "name": "文章",
+      "font_class": "article",
+      "unicode": "e67d",
+      "unicode_decimal": 59005
+    },
+    {
+      "icon_id": "20000264",
+      "name": "收藏",
+      "font_class": "star",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
       "icon_id": "5532895",
       "name": "评论",
       "font_class": "comment",
@@ -14,21 +42,21 @@
     },
     {
       "icon_id": "1240750",
-      "name": "评论",
+      "name": "评论_fill",
       "font_class": "comment_fill",
       "unicode": "e60c",
       "unicode_decimal": 58892
     },
     {
       "icon_id": "6380878",
-      "name": "点赞_块",
+      "name": "点赞_fill",
       "font_class": "like_fill",
       "unicode": "ec8c",
       "unicode_decimal": 60556
     },
     {
       "icon_id": "34760289",
-      "name": "收藏 -已收藏-copy",
+      "name": "收藏_fill",
       "font_class": "star_fill",
       "unicode": "e602",
       "unicode_decimal": 58882
@@ -42,7 +70,7 @@
     },
     {
       "icon_id": "19604252",
-      "name": "view",
+      "name": "眼睛",
       "font_class": "view",
       "unicode": "e6aa",
       "unicode_decimal": 59050
@@ -84,7 +112,7 @@
     },
     {
       "icon_id": "42227529",
-      "name": "robot-2-fill",
+      "name": "人工智能",
       "font_class": "ai",
       "unicode": "e7a2",
       "unicode_decimal": 59298

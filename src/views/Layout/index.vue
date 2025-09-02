@@ -36,6 +36,15 @@ const onSearch = () => {
   router.replace(`/search?title=${searchValue.value}`)
 }
 
+/**
+ * 前往用户页面
+ * @param {String} command 指定跳转页
+ */
+const goUser = (command) => {
+  if (command) router.push(`/user/${command}`)
+  else router.push('/user')
+}
+
 // 头部下拉菜单
 const headerDropdownList = {
   login: [
@@ -95,7 +104,11 @@ const handleCommand = async (command) => {
             </template>
           </el-input>
           <!-- 创作者中心 -->
-          <el-button type="primary" class="header-user-center" v-need-login>
+          <el-button
+            type="primary"
+            class="header-user-center"
+            v-need-login="() => goUser()"
+          >
             创作者中心
           </el-button>
           <!-- 头像&下拉菜单 -->
@@ -182,8 +195,8 @@ const handleCommand = async (command) => {
 }
 
 .el-main {
-  min-height: calc(100vh - 60px - 60px);
   max-width: 1200px;
+  min-height: calc(100vh - 60px - 60px);
   margin: 0 auto;
   padding-left: 0;
   padding-right: 0;
