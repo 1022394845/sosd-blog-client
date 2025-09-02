@@ -1,7 +1,7 @@
 <script setup>
 // 一级评论
 import { getCommentListAPI } from '@/apis/article'
-import { ref, useTemplateRef, provide } from 'vue'
+import { ref, useTemplateRef, provide, nextTick } from 'vue'
 import CommonPaging from '../CommonPaging.vue'
 import CommentCard from './components/CommentCard.vue'
 import BranchComment from './components/BranchComment.vue'
@@ -46,6 +46,30 @@ const activeBranch = (id) => {
   const index = rootCommentList.value.findIndex((item) => item.id === id)
   if (index !== -1) rootCommentList.value[index].children = []
 }
+/**
+ * 重载二级评论
+ * @param {Number} id 父评论id
+ */
+const reloadBranch = (id) => {
+  const index = rootCommentList.value.findIndex((item) => item.id === id)
+  if (index !== -1 && rootCommentList.value[index].children) {
+    rootCommentList.value[index].children = null
+    // 等待DOM更新
+    nextTick(() => {
+      rootCommentList.value[index].children = []
+    })
+  }
+}
+
+/**
+ * 重载根评论列表
+ */
+const reloadRoot = () => {
+  console.log('reload root')
+  pagingRef.value.reload()
+}
+
+defineExpose({ reloadRoot })
 </script>
 
 <template>
@@ -62,6 +86,7 @@ const activeBranch = (id) => {
         <comment-card
           :detail="root"
           @load="(id) => activeBranch(id)"
+          @reload="reloadBranch(root.id)"
         ></comment-card>
 
         <!-- 二级评论 -->

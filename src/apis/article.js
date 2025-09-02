@@ -50,13 +50,13 @@ export const getArticleAbstractAPI = (id) =>
  * @param {Number} articleId 文章id
  * @param {Number} userId 发表者id
  * @param {String} content 评论内容
- * @param {Number} [parentCommentId] 父评论id 根评论不传
+ * @param {Number} [parentCommentId] 父评论id 根评论为-1
  */
 export const publishCommentAPI = (
   articleId,
   userId,
   content,
-  parentCommentId
+  parentCommentId = -1
 ) =>
   request.post('/users/article/detail/comments', {
     articleId,

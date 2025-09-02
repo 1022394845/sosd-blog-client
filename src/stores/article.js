@@ -53,9 +53,21 @@ export const useArticleStore = defineStore('article', () => {
     currentArticleData.value = data
   }
 
+  /**
+   * 发布评论后更新当前评论数
+   * @param {Boolean} add 增加-true 减少-false
+   */
+  function updateCommentNumber(add) {
+    if (typeof currentArticleData.value.commentNumber === 'number') {
+      if (add) currentArticleData.value.commentNumber++
+      else currentArticleData.value.commentNumber--
+    }
+  }
+
   return {
     categoryList,
     currentArticleData,
-    initCurrentArticle
+    initCurrentArticle,
+    updateCommentNumber
   }
 })

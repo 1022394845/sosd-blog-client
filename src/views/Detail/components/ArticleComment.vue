@@ -6,16 +6,21 @@ import { useTemplateRef, inject } from 'vue'
 import { publishCommentAPI } from '@/apis/article'
 import { showMsg } from '@/utils/common'
 import CommentList from '@/components/CommentList/CommentList.vue'
+import { useArticleStore } from '@/stores/article'
 
 const userStore = useUserStore()
+const articleStore = useArticleStore()
 
 const articleId = inject('articleId')
 
 const publishRef = useTemplateRef('publishRef')
+const commentListRef = useTemplateRef('commentListRef')
 const handelPublish = async (value) => {
   try {
     await publishCommentAPI(articleId, userStore.getCurrentUserId(), value)
     showMsg('发表成功', 'success')
+    articleStore.updateCommentNumber(true) // 更新评论数
+    commentListRef.value.reloadRoot() // 重载根评论
     publishRef.value.reset()
   } catch {
     publishRef.value.reset(false)
@@ -55,7 +60,7 @@ defineExpose({ goComment })
       </div>
     </div>
     <section class="comment-list">
-      <comment-list :id="articleId"></comment-list>
+      <comment-list :id="articleId" ref="commentListRef"></comment-list>
     </section>
   </div>
 </template>

@@ -3,9 +3,15 @@ import CommonAvatar from '@/components/CommonAvatar.vue'
 import CommentEditor from '@/components/CommentEditor.vue'
 import DotLoading from '@/components/DotLoading.vue'
 import { useCommentStore } from '@/stores/comment'
-import { computed, useTemplateRef, watch, nextTick } from 'vue'
+import { computed, useTemplateRef, watch, nextTick, inject } from 'vue'
+import { publishCommentAPI } from '@/apis/article'
+import { useUserStore } from '@/stores/user'
+import { showMsg } from '@/utils/common'
 
 const commentStore = useCommentStore()
+const userStore = useUserStore()
+
+const articleId = inject('articleId')
 
 const props = defineProps({
   detail: {
@@ -13,7 +19,7 @@ const props = defineProps({
     required: true
   }
 })
-const emits = defineEmits(['load'])
+const emits = defineEmits(['load', 'reload'])
 
 const handleReply = () => {
   commentStore.handleReply(props.detail.id)
@@ -56,6 +62,27 @@ watch(
     }
   }
 )
+
+/**
+ * reload 提交回复
+ * @param {String} value 回复内容
+ */
+const onSubmit = async (value) => {
+  try {
+    await publishCommentAPI(
+      articleId,
+      userStore.getCurrentUserId(),
+      value,
+      props.detail.id
+    )
+    showMsg('回复成功', 'success')
+    editorRef.value.reset()
+    console.log('emits reload')
+    emits('reload')
+  } catch {
+    editorRef.value.reset(false)
+  }
+}
 </script>
 
 <template>
@@ -91,7 +118,10 @@ watch(
 
       <!-- 回复框 -->
       <div class="reply-editor" v-if="showEditor">
-        <comment-editor ref="editorRef"></comment-editor>
+        <comment-editor
+          ref="editorRef"
+          @submit="(value) => onSubmit(value)"
+        ></comment-editor>
       </div>
     </div>
   </article>

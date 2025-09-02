@@ -3,7 +3,7 @@ import { getCommentListAPI } from '@/apis/article'
 import CommonPaging from '@/components/CommonPaging.vue'
 import CommentCard from './CommentCard.vue'
 import { useCommentStore } from '@/stores/comment'
-import { useTemplateRef, inject, ref } from 'vue'
+import { useTemplateRef, inject, ref, nextTick } from 'vue'
 
 const commentStore = useCommentStore()
 
@@ -56,6 +56,21 @@ const activeLeaf = (id) => {
   const index = leafCommentList.value.findIndex((item) => item.id === id)
   if (index !== -1) leafCommentList.value[index].children = []
 }
+/**
+ * 重载子级评论
+ * @param {Number} id 父评论id
+ */
+const reloadLeaf = (id) => {
+  console.log('reloadLeaf')
+  const index = leafCommentList.value.findIndex((item) => item.id === id)
+  if (index !== -1 && leafCommentList.value[index].children) {
+    leafCommentList.value[index].children = null
+    // // 等待DOM更新
+    nextTick(() => {
+      leafCommentList.value[index].children = []
+    })
+  }
+}
 </script>
 
 <template>
@@ -75,6 +90,7 @@ const activeLeaf = (id) => {
         <comment-card
           :detail="leaf"
           @load="(id) => activeLeaf(id)"
+          @reload="reloadLeaf(leaf.id)"
         ></comment-card>
 
         <!-- 递归调用 -->
