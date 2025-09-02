@@ -9,7 +9,7 @@ const route = useRoute()
 const articleId = Number(route.query.id) || null
 provide('articleId', articleId)
 
-const loadComment = ref(false)
+const allowLoad = ref(false)
 
 // 跳转至评论区
 const commentRef = useTemplateRef('commentRef')
@@ -20,14 +20,14 @@ const goComment = () => {
 
 <template>
   <div class="page-container">
-    <article-detail @success="loadComment = true"></article-detail>
-    <div class="panel-column">
+    <article-detail @success="allowLoad = true"></article-detail>
+    <div class="panel-column" v-if="allowLoad">
       <article-panel @comment="goComment"></article-panel>
     </div>
-    <div class="panel-row">
+    <div class="panel-row" v-if="allowLoad">
       <article-panel direction="row" @comment="goComment"></article-panel>
     </div>
-    <article-comment v-if="loadComment" ref="commentRef"></article-comment>
+    <article-comment v-if="allowLoad" ref="commentRef"></article-comment>
   </div>
 </template>
 
