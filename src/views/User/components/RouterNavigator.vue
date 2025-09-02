@@ -1,10 +1,7 @@
 <script setup>
-// 文章分类导航
-import { useArticleStore } from '@/stores/article'
+// 路由导航
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
-
-const { categoryList } = useArticleStore()
 
 defineProps({
   mode: {
@@ -14,23 +11,37 @@ defineProps({
   }
 })
 
+const routerList = [
+  { label: 'profile', name: '个人信息' },
+  { label: 'article', name: '文章管理' },
+  { label: 'star', name: '我的收藏' },
+  { label: 'history', name: '历史足迹' }
+]
+
 const route = useRoute()
-const activeMenu = computed(() => `/home/${route.params.category}`)
+const activeMenu = computed(() => `/user/${route.name}`)
 </script>
 
 <template>
-  <el-scrollbar max-height="calc(100vh - 100px)">
+  <el-scrollbar max-height="calc(100vh - 180px)">
     <el-menu
-      class="category-nav"
+      class="router-nav"
       :default-active="activeMenu"
       :mode="mode"
       text-color="#515767"
       router
     >
+      <el-button
+        type="primary"
+        class="publish-btn"
+        @click="$router.push('/user/publish')"
+      >
+        写文章
+      </el-button>
       <el-menu-item
-        v-for="item in categoryList"
-        :key="item.id"
-        :index="`/home/${item.label}`"
+        v-for="item in routerList"
+        :key="item.label"
+        :index="`/user/${item.label}`"
       >
         <span
           class="iconfont"
@@ -44,11 +55,20 @@ const activeMenu = computed(() => `/home/${route.params.category}`)
 </template>
 
 <style lang="scss" scoped>
-.category-nav {
+.router-nav {
   width: 100%;
   border-radius: 4px;
   padding: 8px;
   border-right: none;
+
+  .publish-btn {
+    width: 184px;
+    height: 45px;
+    margin-bottom: 10px;
+    margin-right: auto;
+    line-height: 40px;
+    font-size: 16px;
+  }
 
   .el-menu-item {
     height: 45px;
@@ -61,7 +81,9 @@ const activeMenu = computed(() => `/home/${route.params.category}`)
     }
 
     .iconfont {
-      margin-right: 12px;
+      margin-right: 24px;
+      font-size: 18px;
+      font-weight: 700;
     }
   }
 }

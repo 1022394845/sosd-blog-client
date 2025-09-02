@@ -15,7 +15,7 @@ $sosd-main-color-6:#f9f871;
 }
 // 当视口宽度大于$width时隐藏元素
 @mixin hide-above($width) {
-  @media (min-width: calc($width + 1px)) {
+  @media (min-width: $width) {
     display: none;
   }
 }
