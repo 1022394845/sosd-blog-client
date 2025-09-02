@@ -11,9 +11,24 @@ import { onMounted, onUnmounted } from 'vue'
  * @param {Boolean} [once] 仅监听一次 默认为false
  * @returns {Object} 观察器对象
  * @returns {Function} disconnect 手动卸载监听
+ * @returns {Function} reconnect 手动激活监听
  */
 export function useObserver(target, callback, config = {}, once = false) {
   let observer = null // 观察器实例
+
+  /**
+   * 创建实例
+   */
+  function createObserver() {
+    return new IntersectionObserver(async (entries) => {
+      const [entry] = entries // 仅观察一个元素
+
+      if (entry.isIntersecting) {
+        await callback()
+        if (once) disconnect() // 仅监听一次 直接卸载
+      }
+    }, config)
+  }
 
   /**
    * 卸载监听
@@ -26,21 +41,25 @@ export function useObserver(target, callback, config = {}, once = false) {
     }
   }
 
+  /**
+   * 卸载后手动激活监听
+   */
+  function reconnect() {
+    disconnect() // 确保实例已被卸载
+
+    // 创建新实例
+    if (target.value) {
+      observer = createObserver()
+      observer.observe(target.value)
+    }
+  }
+
   onMounted(() => {
     // 创建实例
-    observer = new IntersectionObserver(
-      async (entries) => {
-        const [entry] = entries // 仅观察一个元素
-
-        if (entry.isIntersecting) {
-          await callback()
-          if (once) disconnect() // 仅监听一次 直接卸载
-        }
-      },
-      { ...config }
-    )
-
-    if (target.value) observer.observe(target.value)
+    if (target.value) {
+      observer = createObserver()
+      observer.observe(target.value)
+    }
   })
 
   onUnmounted(() => {
@@ -48,6 +67,7 @@ export function useObserver(target, callback, config = {}, once = false) {
   })
 
   return {
-    disconnect
+    disconnect,
+    reconnect
   }
 }

@@ -70,6 +70,7 @@ const reload = () => {
   page = 0
   total = null
   status.value = 0
+  observer.reconnect() // 重新激活监听
 }
 
 defineExpose({ completeByTotal, reload })
