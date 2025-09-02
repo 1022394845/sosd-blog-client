@@ -14,22 +14,36 @@ const articleId = inject('articleId')
 const publishRef = useTemplateRef('publishRef')
 const handelPublish = async (value) => {
   try {
-    await publishCommentAPI(articleId, userStore.userInfo.id, value)
+    await publishCommentAPI(articleId, userStore.getCurrentUserId(), value)
     showMsg('发表成功', 'success')
     publishRef.value.reset()
   } catch {
     publishRef.value.reset(false)
   }
 }
+
+/**
+ * 跳转至评论区
+ */
+const commentAreaRef = useTemplateRef('commentAreaRef')
+const goComment = () => {
+  if (commentAreaRef.value) commentAreaRef.value.scrollIntoView()
+  // 聚焦编辑器
+  setTimeout(() => {
+    if (publishRef.value) publishRef.value.focus()
+  }, 500)
+}
+
+defineExpose({ goComment })
 </script>
 
 <template>
-  <div class="comment-container">
+  <div class="comment-container" ref="commentAreaRef">
     <header class="header">评论</header>
     <div class="publish-comment">
       <div class="avatar">
         <common-avatar
-          :src="userStore.userInfo.image"
+          :src="userStore.getCurrentUserAvatar()"
           size="40px"
         ></common-avatar>
       </div>

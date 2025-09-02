@@ -1,20 +1,51 @@
 <script setup>
 // 文章详情数据操作板
 import CommonAvatar from '@/components/CommonAvatar.vue'
+import { useArticleStore } from '@/stores/article'
+
+const articleStore = useArticleStore()
+
+const emits = defineEmits(['comment'])
+
+// 前往评论
+const goComment = () => {
+  emits('comment')
+}
 </script>
 
 <template>
   <div class="article-panel">
     <div class="panel-item avatar">
-      <common-avatar size="50px"></common-avatar>
+      <common-avatar
+        :src="articleStore.currentArticleData.image"
+        size="50px"
+      ></common-avatar>
     </div>
-    <el-badge class="panel-item like" :value="1000" :max="999" type="info">
+    <el-badge
+      class="panel-item like"
+      :class="{ active: articleStore.currentArticleData.isLike }"
+      :value="articleStore.currentArticleData.likeNumber"
+      :max="999"
+      type="info"
+    >
       <div class="iconfont icon-like_fill"></div>
     </el-badge>
-    <el-badge class="panel-item comment" :value="12" :max="999" type="info">
+    <el-badge
+      class="panel-item comment"
+      :value="articleStore.currentArticleData.commentNumber"
+      :max="999"
+      type="info"
+      @click="goComment"
+    >
       <div class="iconfont icon-comment_fill"></div>
     </el-badge>
-    <el-badge class="panel-item star" :value="212" :max="999" type="info">
+    <el-badge
+      class="panel-item star"
+      :class="{ active: articleStore.currentArticleData.isFavorite }"
+      :value="articleStore.currentArticleData.favoriteNumber"
+      :max="999"
+      type="info"
+    >
       <div class="iconfont icon-star_fill"></div>
     </el-badge>
   </div>
@@ -44,6 +75,10 @@ import CommonAvatar from '@/components/CommonAvatar.vue'
 
     &:hover {
       color: #515767;
+    }
+
+    &.active {
+      color: $sosd-main-color-1;
     }
   }
 

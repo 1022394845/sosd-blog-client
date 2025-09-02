@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia'
+import { ref } from 'vue'
 
 export const useArticleStore = defineStore('article', () => {
+  // 文章分类
   const categoryList = [
     {
       id: 1,
@@ -34,7 +36,26 @@ export const useArticleStore = defineStore('article', () => {
     }
   ]
 
+  // 当前查看文章看板数据
+  const currentArticleData = ref({})
+  /**
+   * 初始化当前文章数据
+   * @param {Object} data 获取的文章详情数据
+   * @param {Number} data.id 文章id
+   * @param {Number} data.likeNumber 点赞数
+   * @param {Number} data.commentNumber 评论数
+   * @param {Number} data.favoriteNumber 收藏数
+   * @param {Boolean} data.isLike 点赞状态
+   * @param {Boolean} data.isFavorite 收藏状态
+   * @param {String} [data.image] 作者头像
+   */
+  function initCurrentArticle(data = {}) {
+    currentArticleData.value = data
+  }
+
   return {
-    categoryList
+    categoryList,
+    currentArticleData,
+    initCurrentArticle
   }
 })

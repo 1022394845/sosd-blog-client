@@ -1,5 +1,5 @@
 <script setup>
-import { ref, provide } from 'vue'
+import { ref, provide, useTemplateRef } from 'vue'
 import { useRoute } from 'vue-router'
 import ArticleDetail from './components/ArticleDetail.vue'
 import ArticleComment from './components/ArticleComment.vue'
@@ -10,15 +10,21 @@ const articleId = Number(route.query.id) || null
 provide('articleId', articleId)
 
 const loadComment = ref(false)
+
+// 跳转至评论区
+const commentRef = useTemplateRef('commentRef')
+const goComment = () => {
+  if (commentRef.value) commentRef.value.goComment()
+}
 </script>
 
 <template>
   <div class="page-container">
     <div class="panel">
-      <article-panel></article-panel>
+      <article-panel @comment="goComment"></article-panel>
     </div>
     <article-detail @success="loadComment = true"></article-detail>
-    <article-comment v-if="loadComment"></article-comment>
+    <article-comment v-if="loadComment" ref="commentRef"></article-comment>
   </div>
 </template>
 

@@ -4,6 +4,11 @@ import DotLoading from '@/components/DotLoading.vue'
 import RichText from '@/components/RichText.vue'
 import { getArticleAbstractAPI, getArticleDetailAPI } from '@/apis/article'
 import { ref, onMounted, inject } from 'vue'
+import { useUserStore } from '@/stores/user'
+import { useArticleStore } from '@/stores/article'
+
+const userStore = useUserStore()
+const articleStore = useArticleStore()
 
 const articleId = inject('articleId') // 文章id
 // 通知父组件内容加载完毕，可以开始加载评论
@@ -14,8 +19,12 @@ const detailLoading = ref(true)
 const getDetail = async () => {
   if (articleId === null) return
   detailLoading.value = true
-  const data = await getArticleDetailAPI(articleId)
+  const data = await getArticleDetailAPI(
+    articleId,
+    userStore.getCurrentUserId()
+  )
   detail.value = data
+  articleStore.initCurrentArticle(data)
   detailLoading.value = false
 }
 

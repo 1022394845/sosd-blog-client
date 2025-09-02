@@ -60,6 +60,7 @@ import LoginDialog from '@/components/LoginDialog.vue'
   justify-content: center;
   align-items: center;
   background-color: #f5f7fa;
+  background-color: inherit;
   font-size: 16px;
   font-size: inherit;
 }

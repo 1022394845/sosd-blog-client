@@ -59,13 +59,29 @@ export const useUserStore = defineStore(
       return defaultSuccess
     }
 
+    /**
+     * 获取当前用户id
+     */
+    function getCurrentUserId() {
+      return userInfo.value.id || undefined
+    }
+
+    /**
+     * 获取当前用户头像
+     */
+    function getCurrentUserAvatar() {
+      return userInfo.value.image || null
+    }
+
     return {
       token,
       userInfo,
       login,
       logout,
       register,
-      updatePassword
+      updatePassword,
+      getCurrentUserId,
+      getCurrentUserAvatar
     }
   },
   {

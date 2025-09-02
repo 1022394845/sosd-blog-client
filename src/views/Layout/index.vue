@@ -105,7 +105,9 @@ const handleCommand = async (command) => {
             class="header-dropdown"
           >
             <template #default>
-              <common-avatar :stc="userStore.userInfo.image"></common-avatar>
+              <common-avatar
+                :src="userStore.getCurrentUserAvatar()"
+              ></common-avatar>
             </template>
             <template #dropdown>
               <el-dropdown-menu>

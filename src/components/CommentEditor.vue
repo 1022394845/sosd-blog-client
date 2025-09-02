@@ -41,7 +41,7 @@ defineExpose({ reset, focus })
 
 <template>
   <div class="comment-editor">
-    <template v-if="userStore.userInfo.id">
+    <template v-if="userStore.getCurrentUserId()">
       <el-input
         v-model="inputValue"
         class="input"
