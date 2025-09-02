@@ -32,7 +32,7 @@ import RouterNavigator from './components/RouterNavigator.vue'
 .top-nav {
   position: sticky;
   top: 60px;
-  z-index: 9999;
+  z-index: 999;
   width: min(100%, 95vw);
   padding-left: 0;
   padding-right: 0;

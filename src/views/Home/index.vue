@@ -53,7 +53,7 @@ watch(categoryId, () => {
   .top-nav {
     position: sticky;
     top: 60px;
-    z-index: 9999;
+    z-index: 999;
     width: min(100%, 95vw);
     overflow: hidden;
     margin-bottom: 10px;

@@ -155,6 +155,7 @@ const onSubmit = async () => {
 <template>
   <el-dialog
     v-model="dialogVisible"
+    class="login-dialog"
     width="max(35%, 350px)"
     :show-close="false"
     :close-on-click-modal="false"
@@ -270,6 +271,10 @@ const onSubmit = async () => {
 </template>
 
 <style lang="scss" scoped>
+.login-dialog {
+  z-index: 9999;
+}
+
 .header {
   display: flex;
   justify-content: space-between;
