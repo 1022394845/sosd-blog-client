@@ -20,10 +20,13 @@ const goComment = () => {
 
 <template>
   <div class="page-container">
-    <div class="panel">
+    <article-detail @success="loadComment = true"></article-detail>
+    <div class="panel-column">
       <article-panel @comment="goComment"></article-panel>
     </div>
-    <article-detail @success="loadComment = true"></article-detail>
+    <div class="panel-row">
+      <article-panel direction="row" @comment="goComment"></article-panel>
+    </div>
     <article-comment v-if="loadComment" ref="commentRef"></article-comment>
   </div>
 </template>
@@ -32,11 +35,18 @@ const goComment = () => {
 .page-container {
   width: min(820px, 95vw);
 
-  .panel {
+  .panel-column {
     position: fixed;
     margin-left: -10%;
     top: 150px;
     @include hide-below(1050px);
+  }
+
+  .panel-row {
+    display: none;
+    width: fit-content;
+    margin: 20px auto;
+    @include show-below(1050px);
   }
 }
 </style>

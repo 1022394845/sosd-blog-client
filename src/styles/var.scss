@@ -13,3 +13,9 @@ $sosd-main-color-6:#f9f871;
     display: none !important;
   }
 }
+// 当视口宽度小于$width时显示元素
+@mixin show-below($width) {
+  @media (max-width: $width) {
+    display: revert !important;
+  }
+}

@@ -8,6 +8,13 @@ import { inject } from 'vue'
 const articleStore = useArticleStore()
 const userStore = useUserStore()
 
+const props = defineProps({
+  direction: {
+    // 按钮平铺方向 垂直column 水平row 默认column
+    type: String,
+    default: 'column'
+  }
+})
 const articleId = inject('articleId')
 const emits = defineEmits(['comment'])
 
@@ -70,17 +77,17 @@ const toggleStar = () => {
 <style lang="scss" scoped>
 .article-panel {
   display: flex;
-  flex-direction: column;
+  flex-direction: v-bind('props.direction');
   gap: 30px;
-  width: 50px;
+  width: fit-content;
   height: fit-content;
 
   .panel-item {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    aspect-ratio: 1 / 1;
+    width: 50px;
+    height: 50px;
     background-color: #ffffff;
     border-radius: 50%;
     box-shadow: 0 2px 4px 0 rgba(50, 50, 50, 0.1);
