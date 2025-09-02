@@ -40,7 +40,7 @@ const getRootCommentList = async (page, pageSize) => {
 
 /**
  * 激活加载二级评论
- * @param {Number} id 根评论id
+ * @param {Number} id 父评论id
  */
 const activeBranch = (id) => {
   const index = rootCommentList.value.findIndex((item) => item.id === id)

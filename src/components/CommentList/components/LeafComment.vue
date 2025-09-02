@@ -1,9 +1,7 @@
 <script setup>
-// 二级评论
 import { getCommentListAPI } from '@/apis/article'
 import CommonPaging from '@/components/CommonPaging.vue'
 import CommentCard from './CommentCard.vue'
-import LeafComment from './LeafComment.vue'
 import { useCommentStore } from '@/stores/comment'
 import { useTemplateRef, inject, ref } from 'vue'
 
@@ -17,17 +15,17 @@ const props = defineProps({
   }
 })
 const articleId = inject('articleId')
-const branchCommentList = defineModel({ type: Array })
+const leafCommentList = defineModel({ type: Array })
 
 const pagingRef = useTemplateRef('pagingRef')
 const loading = ref(true)
 /**
- * 获取二级评论列表
+ * 获取三级以上评论列表
  * @param {Number} page 当前页码
  * @param {Number} pageSize 页容量
  */
-const getBranchCommentList = async (page, pageSize) => {
-  console.log('request-branch', page, pageSize)
+const getLeafCommentList = async (page, pageSize) => {
+  console.log('request-leaf', page, pageSize)
   try {
     loading.value = true
     const { records, total } = await getCommentListAPI(
@@ -46,40 +44,35 @@ const getBranchCommentList = async (page, pageSize) => {
 }
 
 /**
- * 激活加载三级评论
+ * 激活加载子级评论
  * @param {Number} id 父评论id
  */
 const activeLeaf = (id) => {
-  const index = branchCommentList.value.findIndex((item) => item.id === id)
-  if (index !== -1) branchCommentList.value[index].children = []
+  const index = leafCommentList.value.findIndex((item) => item.id === id)
+  if (index !== -1) leafCommentList.value[index].children = []
 }
 </script>
 
 <template>
   <common-paging
-    v-model="branchCommentList"
+    v-model="leafCommentList"
     ref="pagingRef"
     :page-size="5"
     small
-    @on-load="(page, pageSize) => getBranchCommentList(page, pageSize)"
+    @on-load="(page, pageSize) => getLeafCommentList(page, pageSize)"
   >
-    <!-- 二级评论 -->
     <div class="comment-list" v-loading="loading">
-      <div
-        class="branch-comment"
-        v-for="branch in branchCommentList"
-        :key="branch.id"
-      >
+      <div class="leaf-comment" v-for="leaf in leafCommentList" :key="leaf.id">
         <comment-card
-          :detail="branch"
+          :detail="leaf"
           @load="(id) => activeLeaf(id)"
         ></comment-card>
 
-        <!-- 三级评论 -->
-        <div class="leaf" v-if="branch.children">
+        <!-- 递归调用 -->
+        <div class="leaf" v-if="leaf.children">
           <leaf-comment
-            v-model="branch.children"
-            :parent-id="branch.id"
+            v-model="leaf.children"
+            :parent-id="leaf.id"
           ></leaf-comment>
         </div>
       </div>
@@ -95,7 +88,6 @@ const activeLeaf = (id) => {
 
   .leaf {
     margin-top: 20px;
-    padding-left: 60px;
   }
 }
 </style>
