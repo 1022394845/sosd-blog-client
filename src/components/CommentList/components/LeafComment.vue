@@ -12,6 +12,11 @@ const props = defineProps({
     // 父评论id
     type: Number,
     required: true
+  },
+  level: {
+    // 叶评论层级 %6 用于决定border颜色
+    type: Number,
+    required: true
   }
 })
 const articleId = inject('articleId')
@@ -61,7 +66,11 @@ const activeLeaf = (id) => {
     small
     @on-load="(page, pageSize) => getLeafCommentList(page, pageSize)"
   >
-    <div class="comment-list" v-loading="loading">
+    <div
+      class="comment-list"
+      v-loading="loading"
+      :class="{ [`level-${level + 1}`]: !loading }"
+    >
       <div class="leaf-comment" v-for="leaf in leafCommentList" :key="leaf.id">
         <comment-card
           :detail="leaf"
@@ -73,6 +82,7 @@ const activeLeaf = (id) => {
           <leaf-comment
             v-model="leaf.children"
             :parent-id="leaf.id"
+            :level="(level + 1) % 6"
           ></leaf-comment>
         </div>
       </div>
@@ -88,6 +98,24 @@ const activeLeaf = (id) => {
 
   .leaf {
     margin-top: 20px;
+  }
+}
+
+// 6个层级的border
+$border-colors: (
+  1: $sosd-main-color-1,
+  2: $sosd-main-color-2,
+  3: $sosd-main-color-3,
+  4: $sosd-main-color-4,
+  5: $sosd-main-color-5,
+  6: $sosd-main-color-6
+);
+
+@each $level, $color in $border-colors {
+  .level-#{$level} {
+    padding-top: 8px;
+    border-top: 2px dashed $color;
+    border-bottom: 2px dashed $color;
   }
 }
 </style>

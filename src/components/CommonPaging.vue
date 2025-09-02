@@ -98,7 +98,7 @@ defineExpose({ completeByTotal, reload })
 
     <div
       class="pagination"
-      v-if="total !== null"
+      v-if="total !== null && total > pageSize"
       :style="{
         'justify-content': `flex-${position === 'left' ? 'start' : 'end'}`
       }"
@@ -130,7 +130,7 @@ defineExpose({ completeByTotal, reload })
   .pagination {
     display: flex;
     width: 100%;
-    margin-top: 20px;
+    margin: 20px 0;
     overflow: hidden;
   }
 }

@@ -80,6 +80,7 @@ const activeLeaf = (id) => {
           <leaf-comment
             v-model="branch.children"
             :parent-id="branch.id"
+            :level="0"
           ></leaf-comment>
         </div>
       </div>
