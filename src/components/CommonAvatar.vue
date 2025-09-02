@@ -27,7 +27,7 @@ const props = defineProps({
   width: v-bind('props.size');
   height: v-bind('props.size');
   margin-left: auto;
-  font-size: 18px;
+  font-size: calc(v-bind('props.size') * 18 / 35); // 以35px~18px为基准
   cursor: pointer;
 }
 </style>
