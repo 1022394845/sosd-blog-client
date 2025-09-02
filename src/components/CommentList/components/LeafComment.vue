@@ -30,7 +30,6 @@ const loading = ref(true)
  * @param {Number} pageSize 页容量
  */
 const getLeafCommentList = async (page, pageSize) => {
-  console.log('request-leaf', page, pageSize)
   try {
     loading.value = true
     const { records, total } = await getCommentListAPI(
@@ -61,7 +60,6 @@ const activeLeaf = (id) => {
  * @param {Number} id 父评论id
  */
 const reloadLeaf = (id) => {
-  console.log('reloadLeaf')
   const index = leafCommentList.value.findIndex((item) => item.id === id)
   if (index !== -1 && leafCommentList.value[index].children) {
     leafCommentList.value[index].children = null
@@ -129,7 +127,7 @@ $border-colors: (
 
 @each $level, $color in $border-colors {
   .level-#{$level} {
-    padding-top: 8px;
+    padding: 8px 0;
     border-top: 2px dashed $color;
     border-bottom: 2px dashed $color;
   }

@@ -27,7 +27,6 @@ const loading = ref(true)
  * @param {Number} pageSize 页容量
  */
 const getBranchCommentList = async (page, pageSize) => {
-  console.log('request-branch', page, pageSize)
   try {
     loading.value = true
     const { records, total } = await getCommentListAPI(
@@ -58,7 +57,6 @@ const activeLeaf = (id) => {
  * @param {Number} id 父评论id
  */
 const reloadLeaf = (id) => {
-  console.log('reloadLeaf')
   const index = branchCommentList.value.findIndex((item) => item.id === id)
   if (index !== -1 && branchCommentList.value[index].children) {
     branchCommentList.value[index].children = null

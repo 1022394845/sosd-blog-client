@@ -29,7 +29,6 @@ const pagingRef = useTemplateRef('pagingRef')
 const initLoading = ref(true)
 const articleList = ref([])
 const loadArticle = async (page, pageSize) => {
-  console.log('request', page, pageSize, { ...props })
   try {
     const { type, highlight: _, ...config } = props
 

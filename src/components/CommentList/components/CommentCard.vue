@@ -7,9 +7,11 @@ import { computed, useTemplateRef, watch, nextTick, inject } from 'vue'
 import { publishCommentAPI } from '@/apis/article'
 import { useUserStore } from '@/stores/user'
 import { showMsg } from '@/utils/common'
+import { useArticleStore } from '@/stores/article'
 
 const commentStore = useCommentStore()
 const userStore = useUserStore()
+const articleStore = useArticleStore()
 
 const articleId = inject('articleId')
 
@@ -77,7 +79,7 @@ const onSubmit = async (value) => {
     )
     showMsg('回复成功', 'success')
     editorRef.value.reset()
-    console.log('emits reload')
+    articleStore.updateCommentNumber(true)
     emits('reload')
   } catch {
     editorRef.value.reset(false)

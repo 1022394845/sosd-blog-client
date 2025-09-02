@@ -26,7 +26,6 @@ const loading = ref(true)
  * @param {Number} pageSize 页容量
  */
 const getRootCommentList = async (page, pageSize) => {
-  console.log('request-root', page, pageSize)
   try {
     loading.value = true
     const { records, total } = await getCommentListAPI(props.id, page, pageSize)
@@ -65,7 +64,6 @@ const reloadBranch = (id) => {
  * 重载根评论列表
  */
 const reloadRoot = () => {
-  console.log('reload root')
   pagingRef.value.reload()
 }
 
