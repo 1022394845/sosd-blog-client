@@ -1,7 +1,11 @@
-<script setup></script>
+<script setup>
+import RichTextEditor from '@/components/RichTextEditor.vue'
+</script>
 
 <template>
-  <div>publish</div>
+  <div>
+    <rich-text-editor></rich-text-editor>
+  </div>
 </template>
 
 <style lang="scss" scoped></style>
