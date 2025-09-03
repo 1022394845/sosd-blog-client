@@ -92,7 +92,10 @@ onMounted(() => {
           </el-select>
         </el-form-item>
         <el-form-item label="封面">
-          <image-uploader v-model="formData.image"></image-uploader>
+          <image-uploader
+            v-model="formData.image"
+            size="min(148px, 30vw)"
+          ></image-uploader>
         </el-form-item>
         <el-form-item label="内容" prop="content">
           <rich-text-editor v-model="formData.content"></rich-text-editor>

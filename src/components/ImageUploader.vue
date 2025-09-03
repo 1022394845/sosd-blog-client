@@ -6,6 +6,13 @@ import { genFileId } from 'element-plus'
 import { showMsg } from '@/utils/common'
 import { uploadFileAPI } from '@/apis/common'
 
+const props = defineProps({
+  size: {
+    // 图片框大小 默认148px
+    type: String,
+    default: '148px'
+  }
+})
 const emits = defineEmits(['success'])
 const url = defineModel({ type: String })
 
@@ -116,7 +123,15 @@ defineExpose({ upload })
 </template>
 
 <style lang="scss" scoped>
-:deep(.el-upload) {
-  transition: all 0.2s;
+:deep(.el-upload-list) {
+  .el-upload-list__item,
+  .el-upload {
+    width: v-bind('props.size');
+    height: v-bind('props.size');
+  }
+
+  .el-upload {
+    transition: all 0.2s;
+  }
 }
 </style>

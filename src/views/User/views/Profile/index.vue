@@ -95,6 +95,7 @@ const handleUpdate = async () => {
           <image-uploader
             ref="uploadRef"
             v-model="formData.image"
+            size="min(148px, 30vw)"
             @success="handleUpdate"
           ></image-uploader>
         </el-form-item>
