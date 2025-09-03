@@ -97,7 +97,7 @@ const onSubmit = async (value) => {
       <header class="header">
         <address class="username">{{ detail.username }}</address>
         <!-- 子评论 -->
-        <template v-if="detail.fatherId !== -1">
+        <template v-if="detail.fatherId !== 0">
           <span class="reply">回复</span>
           <span class="username">{{ detail.fatherUserName }}</span>
         </template>

@@ -82,7 +82,7 @@ const reloadLeaf = (id) => {
     <div
       class="comment-list"
       v-loading="loading"
-      :class="{ [`level-${level + 1}`]: !loading }"
+      :class="{ [`level-${level + 1}`]: !loading && leafCommentList.length }"
     >
       <div class="leaf-comment" v-for="leaf in leafCommentList" :key="leaf.id">
         <comment-card

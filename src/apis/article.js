@@ -50,13 +50,13 @@ export const getArticleAbstractAPI = (id) =>
  * @param {Number} articleId 文章id
  * @param {Number} userId 发表者id
  * @param {String} content 评论内容
- * @param {Number} [parentCommentId] 父评论id 根评论为-1
+ * @param {Number} [parentCommentId] 父评论id 根评论为0
  */
 export const publishCommentAPI = (
   articleId,
   userId,
   content,
-  parentCommentId = -1
+  parentCommentId = 0
 ) =>
   request.post('/users/article/detail/comments', {
     articleId,
@@ -70,13 +70,13 @@ export const publishCommentAPI = (
  * @param {Number} articleId 文章id
  * @param {Number} page 当前页码
  * @param {Number} pageSize 页容量
- * @param {Number} [parentCommentId] 父评论id 根评论为-1
+ * @param {Number} [parentCommentId] 父评论id 根评论为0
  */
 export const getCommentListAPI = (
   articleId,
   page,
   pageSize,
-  parentCommentId = -1
+  parentCommentId = 0
 ) =>
   request.get('/users/article/detail/comments', {
     params: { articleId, page, pageSize, parentCommentId }
