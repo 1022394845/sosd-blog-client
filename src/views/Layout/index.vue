@@ -66,7 +66,7 @@ const handleCommand = async (command) => {
     // 如果当前页需要登录权限 重定向至首页
     if (route.meta.requiresAuth) router.replace('/')
     showMsg('登出成功', 'success')
-  }
+  } else router.push(`/user/${command}`)
 }
 </script>
 
