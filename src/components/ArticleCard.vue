@@ -145,6 +145,7 @@ const highlightMatch = (text) => highlightText(text, props.highlight)
     flex-shrink: 0;
     width: 108px;
     height: 72px;
+    background-color: #f5f7fa;
     font-size: 28px;
     @include hide-below(300px);
   }
