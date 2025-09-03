@@ -132,49 +132,53 @@ const onSubmit = async () => {
 
 <template>
   <div class="page-container" v-loading="loading || userStore.getInfoLoading">
-    <el-form
-      ref="formRef"
-      class="form"
-      :model="formData"
-      :rules="rules"
-      label-width="auto"
-      hide-required-asterisk
-    >
-      <el-form-item label="编号">
-        <el-input v-model="formData.id" disabled />
-      </el-form-item>
-      <el-form-item label="昵称" prop="username">
-        <el-input v-model="formData.username" />
-      </el-form-item>
-      <el-form-item label="邮箱" prop="email">
-        <el-input v-model="formData.email" />
-      </el-form-item>
-      <el-form-item label="性别">
-        <el-radio-group v-model="formData.gender">
-          <el-radio :value="1">男</el-radio>
-          <el-radio :value="2">女</el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="头像">
-        <el-upload
-          v-model:file-list="avatarFile"
-          ref="uploadRef"
-          list-type="picture-card"
-          :auto-upload="false"
-          accept="image/*"
-          :limit="1"
-          :on-exceed="(files) => handleExcced(files)"
-          :on-preview="(file) => handlePreview(file)"
-          :on-remove="handleRemove"
-          :before-upload="(file) => validateAvatarFile(file)"
-          :http-request="(config) => handleUpload(config)"
-          :on-success="onSubmit"
-        >
-          <el-icon><Plus /></el-icon>
-        </el-upload>
-      </el-form-item>
-    </el-form>
-    <el-button class="submit-btn gradient-1" @click="onSubmit">保存</el-button>
+    <div class="form-container">
+      <el-form
+        ref="formRef"
+        class="form"
+        :model="formData"
+        :rules="rules"
+        label-width="auto"
+        hide-required-asterisk
+      >
+        <el-form-item label="编号">
+          <el-input v-model="formData.id" disabled />
+        </el-form-item>
+        <el-form-item label="昵称" prop="username">
+          <el-input v-model="formData.username" />
+        </el-form-item>
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model="formData.email" />
+        </el-form-item>
+        <el-form-item label="性别">
+          <el-radio-group v-model="formData.gender">
+            <el-radio :value="1">男</el-radio>
+            <el-radio :value="2">女</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="头像">
+          <el-upload
+            v-model:file-list="avatarFile"
+            ref="uploadRef"
+            list-type="picture-card"
+            :auto-upload="false"
+            accept="image/*"
+            :limit="1"
+            :on-exceed="(files) => handleExcced(files)"
+            :on-preview="(file) => handlePreview(file)"
+            :on-remove="handleRemove"
+            :before-upload="(file) => validateAvatarFile(file)"
+            :http-request="(config) => handleUpload(config)"
+            :on-success="onSubmit"
+          >
+            <el-icon><Plus /></el-icon>
+          </el-upload>
+        </el-form-item>
+      </el-form>
+      <el-button class="submit-btn gradient-1" @click="onSubmit"
+        >保存</el-button
+      >
+    </div>
 
     <!-- 头像预览 -->
     <el-dialog v-model="dialogVisible">
@@ -184,7 +188,7 @@ const onSubmit = async () => {
 </template>
 
 <style lang="scss" scoped>
-.page-container {
+.form-container {
   width: min(500px, 95%);
   margin: 20px auto 0;
 }

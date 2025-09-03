@@ -58,6 +58,14 @@ const router = createRouter({
               meta: {
                 title: '历史足迹'
               }
+            },
+            {
+              path: 'publish',
+              name: 'publish',
+              component: () => import('@/views/User/views/Publish/index.vue'),
+              meta: {
+                title: '发布文章'
+              }
             }
           ]
         }
