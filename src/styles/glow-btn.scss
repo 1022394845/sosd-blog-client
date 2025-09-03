@@ -1,0 +1,114 @@
+@use 'sass:list';
+@use 'sass:color';
+@use 'sass:map';
+@use 'sass:string';
+
+// 工具函数：获取颜色的RGB值（作为单独的变量返回）
+@function get-rgb-values($color) {
+  @return (r: color.channel($color, "red", $space: rgb),
+    g: color.channel($color, "green", $space: rgb),
+    b: color.channel($color, "blue", $space: rgb));
+}
+
+// 工具函数：生成阴影列表
+@function create-shadows($colors) {
+  $shadows: (
+  );
+$count: list.length($colors);
+
+@for $i from 1 through $count {
+  $color: list.nth($colors, $i);
+  $rgb: get-rgb-values($color);
+  $size: $i * 20px;
+  $opacity: 0.8 - ($i - 1) * 0.2;
+
+  $shadows: list.append($shadows, 0 0 $size rgba(map.get($rgb, r), map.get($rgb, g), map.get($rgb, b), $opacity), comma);
+}
+
+@return $shadows;
+}
+
+// 主Mixin
+@mixin glow-btn($gradient-colors, $animation-duration: 1.5s, $scale-factor: 1.05) {
+  // 基础样式
+  display: flex;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-image: linear-gradient(to right, $gradient-colors);
+  background-size: 200% auto;
+  color: #ffffff;
+
+  // 获取列表中的颜色
+  $first-color: list.nth($gradient-colors, 1);
+  $second-color: list.nth($gradient-colors, 2);
+
+  // 获取RGB值
+  $first-rgb: get-rgb-values($first-color);
+  $second-rgb: get-rgb-values($second-color);
+
+  // 常态阴影 - 修复了这里的RGB值传递方式
+  box-shadow: 0 0 5px rgba(map.get($first-rgb, r),
+      map.get($first-rgb, g),
+      map.get($first-rgb, b),
+      0.3);
+
+  // 悬停效果
+  &:hover {
+    box-shadow: 0 0 10px rgba(map.get($first-rgb, r),
+        map.get($first-rgb, g),
+        map.get($first-rgb, b),
+        0.5);
+    transform: scale(1.02);
+  }
+
+  // 焦点状态
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 10px rgba(map.get($first-rgb, r),
+        map.get($first-rgb, g),
+        map.get($first-rgb, b),
+        0.5),
+      0 0 0 2px rgba(255, 255, 255, 0.3);
+  }
+
+  // 生成唯一动画名称
+  $animation-name: glow-#{string.unique-id()};
+
+  // 激活状态动画
+  &:active {
+    animation: $animation-name $animation-duration ease-out forwards;
+  }
+
+  // 动态生成匹配的动画
+  @keyframes #{$animation-name} {
+    0% {
+      background-position: 0% 50%;
+      box-shadow: 0 0 5px rgba(map.get($first-rgb, r),
+          map.get($first-rgb, g),
+          map.get($first-rgb, b),
+          0.8),
+        0 0 10px rgba(map.get($second-rgb, r),
+          map.get($second-rgb, g),
+          map.get($second-rgb, b),
+          0.6);
+      transform: scale(1);
+    }
+
+    50% {
+      background-position: 100% 50%;
+      box-shadow: create-shadows($gradient-colors);
+      transform: scale($scale-factor);
+    }
+
+    100% {
+      background-position: 0% 50%;
+      box-shadow: 0 0 5px rgba(map.get($first-rgb, r),
+          map.get($first-rgb, g),
+          map.get($first-rgb, b),
+          0.3);
+      transform: scale(1);
+    }
+  }
+}

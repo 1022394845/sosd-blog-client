@@ -12,36 +12,27 @@ import LoginDialog from '@/components/LoginDialog.vue'
 
 <style lang="scss">
 .gradient-1 {
-  background-image: linear-gradient(
-    to right,
-    #1e80ff,
-    #6c7dfd,
-    #967af9,
-    #b776f2,
-    #d372e9
-  );
+  background-image: linear-gradient(to right, $gradient-1...);
+
+  &.submit-btn {
+    @include glow-btn($gradient-1);
+  }
 }
 
 .gradient-2 {
-  background-image: linear-gradient(
-    to right,
-    #d372e9,
-    #e26fdc,
-    #ef6ed0,
-    #f86ec3,
-    #ff70b7
-  );
+  background-image: linear-gradient(to right, $gradient-2...);
+
+  &.submit-btn {
+    @include glow-btn($gradient-2);
+  }
 }
 
 .gradient-3 {
-  background-image: linear-gradient(
-    to right,
-    #ff70b7,
-    #ff76a6,
-    #ff7e97,
-    #ff888b,
-    #ff9382
-  );
+  background-image: linear-gradient(to right, $gradient-3...);
+
+  &.submit-btn {
+    @include glow-btn($gradient-3);
+  }
 }
 
 .logo {

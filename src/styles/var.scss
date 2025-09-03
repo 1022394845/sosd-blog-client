@@ -1,10 +1,32 @@
 // 颜色
-$sosd-main-color-1:#1e80ff;
-$sosd-main-color-2:#d372e9;
-$sosd-main-color-3:#ff70b7;
-$sosd-main-color-4:#ff9382;
-$sosd-main-color-5:#ffc761;
-$sosd-main-color-6:#f9f871;
+$sosd-main-color-1: #1e80ff;
+$sosd-main-color-2: #d372e9;
+$sosd-main-color-3: #ff70b7;
+$sosd-main-color-4: #ff9382;
+$sosd-main-color-5: #ffc761;
+$sosd-main-color-6: #f9f871;
+
+$gradient-1: (
+  #1e80ff,
+  #6c7dfd,
+  #967af9,
+  #b776f2,
+  #d372e9
+);
+$gradient-2: (
+  #d372e9,
+  #e26fdc,
+  #ef6ed0,
+  #f86ec3,
+  #ff70b7
+);
+$gradient-3: (
+  #ff70b7,
+  #ff76a6,
+  #ff7e97,
+  #ff888b,
+  #ff9382
+);
 
 // 指令
 // 当视口宽度不大于$width时隐藏元素
@@ -13,6 +35,7 @@ $sosd-main-color-6:#f9f871;
     display: none;
   }
 }
+
 // 当视口宽度大于$width时隐藏元素
 @mixin hide-above($width) {
   @media (min-width: $width) {
