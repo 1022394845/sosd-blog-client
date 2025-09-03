@@ -92,3 +92,27 @@ export const uploadAvatarAPI = async (file, getProgress) => {
  * @param {Object} data 信息表单
  */
 export const modifyUserInfoAPI = (data) => request.put('/user/person', data)
+
+/**
+ * 获取我的收藏列表
+ * @param {Number} page 当前页码
+ * @param {Number} pageSize 页容量
+ * @param {Object} config 配置项
+ * @param {Number} config.userId 用户id
+ */
+export const getStarListAPI = (page, pageSize, config = {}) =>
+  request.get('/user/person/likes', {
+    params: { page, pageSize, id: config.userId }
+  })
+
+/**
+ * 获取历史足迹列表
+ * @param {Number} page 当前页码
+ * @param {Number} pageSize 页容量
+ * @param {Object} config 配置项
+ * @param {Number} config.userId 用户id
+ */
+export const getHistoryListAPI = (page, pageSize, config = {}) =>
+  request.get('/user/person/history', {
+    params: { page, pageSize, id: config.userId }
+  })

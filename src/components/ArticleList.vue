@@ -5,23 +5,27 @@ import ArticleCard from './ArticleCard.vue'
 import RowSkeleton from './RowSkeleton.vue'
 import { useTemplateRef, ref } from 'vue'
 import { getHomeArticleListAPI, getSearchListAPI } from '@/apis/article'
+import { getHistoryListAPI, getStarListAPI } from '@/apis/user'
 
 const props = defineProps({
   type: {
-    // 类别 0-首页列表 1-搜索列表
+    // 类别 0-首页列表 1-搜索列表 2-文章管理 3-我的收藏 4-历史足迹
     type: Number,
     required: true
   },
   categoryId: Number, // 筛选分类id
   title: String, // 搜索标题
   tag: String, // 搜索标签
-  highlight: String // 高亮关键词
+  highlight: String, // 高亮关键词
+  userId: Number // 用户id
 })
 
 // 根据props.type选择对应的API
 const apiMap = {
   0: getHomeArticleListAPI,
-  1: getSearchListAPI
+  1: getSearchListAPI,
+  3: getStarListAPI,
+  4: getHistoryListAPI
 }
 
 const pagingRef = useTemplateRef('pagingRef')
@@ -49,6 +53,23 @@ const reload = () => {
 }
 
 defineExpose({ reload })
+
+/**
+ * 分组展示
+ * @param {Number} index 当前项数组索引
+ */
+const showGroup = (index) => {
+  if (index === 0) return true // 数组第一项
+
+  const current = new Date(articleList.value[index].createTime)
+  const last = new Date(articleList.value[index - 1].createTime)
+
+  return (
+    current.getDate() !== last.getDate() ||
+    current.getMonth() !== last.getMonth() ||
+    current.getFullYear() !== last.getFullYear()
+  )
+}
 </script>
 
 <template>
@@ -64,14 +85,20 @@ defineExpose({ reload })
         style="padding: 20px"
       ></row-skeleton>
 
-      <router-link
+      <div
+        class="article-list-item"
         v-for="(item, index) in articleList"
         :key="index"
-        :to="`/detail?id=${item.id}`"
-        target="_blank"
       >
-        <article-card :detail="item" :highlight="highlight"></article-card>
-      </router-link>
+        <time
+          class="group-divider"
+          v-if="[3, 4].includes(type) && showGroup(index)"
+          >{{ item.createTime?.substring(0, 10) }}</time
+        >
+        <router-link :to="`/detail?id=${item.id}`" target="_blank">
+          <article-card :detail="item" :highlight="highlight"></article-card>
+        </router-link>
+      </div>
     </div>
   </scroll-paging>
 </template>
@@ -80,5 +107,12 @@ defineExpose({ reload })
 .article-list {
   width: 100%;
   background-color: #ffffff;
+
+  .group-divider {
+    display: block;
+    padding: 10px 0;
+    background-color: #f7f8fa;
+    border-bottom: 1px solid rgba(228, 230, 235, 0.5);
+  }
 }
 </style>

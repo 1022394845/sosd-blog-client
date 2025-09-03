@@ -5,29 +5,6 @@ import { Picture } from '@element-plus/icons-vue'
 
 const props = defineProps({
   detail: {
-    // 文章信息
-    // {
-    //   id: 1,
-    //   title: 'Python编程入门指南',
-    //   preview: 'Python是一种高级编程语言...',
-    //   tags: [
-    //     {
-    //       id: 1,
-    //       name: 'Java',
-    //       status: 1
-    //     },
-    //     {
-    //       id: 2,
-    //       name: 'C++',
-    //       status: 1
-    //     }
-    //   ],
-    //   author: 'Lynn',
-    //   image: 'python.jpg',
-    //   likeNumber: 2,
-    //   viewNumber: 12,
-    //   isLike: false
-    // }
     type: Object,
     required: true
   },
