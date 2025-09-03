@@ -1,7 +1,7 @@
 <script setup>
 // 文章内容部分
 import DotLoading from '@/components/DotLoading.vue'
-import RichText from '@/components/RichText.vue'
+import RichTextPrase from '@/components/RichTextPrase.vue'
 import { getArticleAbstractAPI, getArticleDetailAPI } from '@/apis/article'
 import { ref, onMounted, inject } from 'vue'
 import { useUserStore } from '@/stores/user'
@@ -78,7 +78,7 @@ onMounted(async () => {
 
       <!-- 文章内容 -->
       <div class="content">
-        <rich-text :text="detail.content"></rich-text>
+        <rich-text-prase :text="detail.content"></rich-text-prase>
       </div>
     </template>
   </article>
