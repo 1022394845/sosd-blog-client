@@ -3,8 +3,9 @@ import { ref, useTemplateRef, watch, nextTick } from 'vue'
 import { Plus } from '@element-plus/icons-vue'
 import { genFileId } from 'element-plus'
 import { useUserStore } from '@/stores/user'
-import { modifyUserInfoAPI, uploadAvatarAPI } from '@/apis/user'
+import { modifyUserInfoAPI } from '@/apis/user'
 import { showMsg } from '@/utils/common'
+import { uploadFileAPI } from '@/apis/common'
 
 const userStore = useUserStore()
 
@@ -94,7 +95,7 @@ const validateAvatarFile = (file) => {
 // 上传头像
 const handleUpload = async (config) => {
   try {
-    const data = await uploadAvatarAPI(config.file, (percent) => {
+    const data = await uploadFileAPI(config.file, (percent) => {
       // 上传进度回显
       config.onProgress({ percent })
     })
