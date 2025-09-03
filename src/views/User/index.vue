@@ -43,8 +43,8 @@ const route = useRoute()
   width: min(100%, 95vw);
   padding-left: 0;
   padding-right: 0;
+  margin: 0 auto 10px;
   overflow: hidden;
-  margin-bottom: 10px;
   @include hide-above(1210px);
 }
 

@@ -339,9 +339,7 @@ const onSubmit = async () => {
   }
 
   .submit-btn {
-    width: 100%;
     font-size: 18px;
-    color: #ffffff;
   }
 }
 </style>

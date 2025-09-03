@@ -74,7 +74,9 @@ const handleCommand = async (command) => {
       <el-header>
         <div class="header-container">
           <!-- logo -->
-          <h1 class="header-logo logo">SOSD</h1>
+          <h1 class="header-logo">
+            <router-link to="/" class="logo">SOSD</router-link>
+          </h1>
           <!-- 导航 -->
           <el-menu
             class="header-nav"

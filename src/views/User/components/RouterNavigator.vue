@@ -3,13 +3,19 @@
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
 
-defineProps({
+const props = defineProps({
   mode: {
     // 导航方向 垂直-vertical 水平-horizontal 默认垂直
     type: String,
     default: 'vertical'
   }
 })
+const publishBtnWidth = computed(() =>
+  props.mode === 'vertical' ? '184px' : 'fit-content'
+)
+const publishBtnMarginRight = computed(() =>
+  props.mode === 'vertical' ? '0' : '20px'
+)
 
 const routerList = [
   { label: 'profile', name: '个人信息' },
@@ -23,7 +29,7 @@ const activeMenu = computed(() => `/user/${route.name}`)
 </script>
 
 <template>
-  <el-scrollbar max-height="calc(100vh - 180px)">
+  <el-scrollbar max-height="calc(100vh - 120px)">
     <el-menu
       class="router-nav"
       :default-active="activeMenu"
@@ -62,10 +68,10 @@ const activeMenu = computed(() => `/user/${route.name}`)
   border-right: none;
 
   .publish-btn {
-    width: 184px;
+    width: v-bind(publishBtnWidth);
     height: 45px;
     margin-bottom: 10px;
-    margin-right: auto;
+    margin-right: v-bind(publishBtnMarginRight);
     line-height: 40px;
     font-size: 16px;
   }

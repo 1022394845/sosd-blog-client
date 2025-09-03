@@ -1,4 +1,9 @@
-import { updatePasswordAPI, userLoginAPI, userRegisterAPI } from '@/apis/user'
+import {
+  getUserInfoAPI,
+  updatePasswordAPI,
+  userLoginAPI,
+  userRegisterAPI
+} from '@/apis/user'
 import { defaultSuccess, requiredError } from '@/utils/common'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
@@ -21,6 +26,7 @@ export const useUserStore = defineStore(
       const data = await userLoginAPI(account, password)
       token.value = data.token
       userInfo.value.id = data.id
+      getUserInfo(data.id) // 获取用户信息
       return defaultSuccess
     }
 
@@ -59,6 +65,21 @@ export const useUserStore = defineStore(
       return defaultSuccess
     }
 
+    const getInfoLoading = ref(false)
+    /**
+     * 获取用户信息
+     * @param {Number} id 用户id
+     */
+    async function getUserInfo(id) {
+      if (typeof id !== 'number') return requiredError
+
+      getInfoLoading.value = true
+      const data = await getUserInfoAPI(id)
+      userInfo.value = { ...data }
+      getInfoLoading.value = false
+      return defaultSuccess
+    }
+
     /**
      * 获取当前用户id
      */
@@ -81,7 +102,9 @@ export const useUserStore = defineStore(
       register,
       updatePassword,
       getCurrentUserId,
-      getCurrentUserAvatar
+      getCurrentUserAvatar,
+      getInfoLoading,
+      getUserInfo
     }
   },
   {
