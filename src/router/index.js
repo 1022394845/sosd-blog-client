@@ -30,22 +30,34 @@ const router = createRouter({
             {
               path: 'profile',
               name: 'profile',
-              component: () => import('@/views/User/views/Profile/index.vue')
+              component: () => import('@/views/User/views/Profile/index.vue'),
+              meta: {
+                title: '个人信息'
+              }
             },
             {
               path: 'article',
               name: 'article',
-              component: () => import('@/views/User/views/Article/index.vue')
+              component: () => import('@/views/User/views/Article/index.vue'),
+              meta: {
+                title: '文章管理'
+              }
             },
             {
               path: 'star',
               name: 'star',
-              component: () => import('@/views/User/views/Star/index.vue')
+              component: () => import('@/views/User/views/Star/index.vue'),
+              meta: {
+                title: '我的收藏'
+              }
             },
             {
               path: 'history',
               name: 'history',
-              component: () => import('@/views/User/views/History/index.vue')
+              component: () => import('@/views/User/views/History/index.vue'),
+              meta: {
+                title: '历史足迹'
+              }
             }
           ]
         }

@@ -1,5 +1,8 @@
 <script setup>
+import { useRoute } from 'vue-router'
 import RouterNavigator from './components/RouterNavigator.vue'
+
+const route = useRoute()
 </script>
 
 <template>
@@ -13,11 +16,15 @@ import RouterNavigator from './components/RouterNavigator.vue'
           <router-navigator></router-navigator>
         </el-aside>
         <el-main>
-          <router-view v-slot="{ Component }">
-            <transition name="fade" mode="out-in">
-              <component :is="Component" />
-            </transition>
-          </router-view>
+          <header class="title">{{ route.meta.title }}</header>
+          <el-divider></el-divider>
+          <main>
+            <router-view v-slot="{ Component }">
+              <transition name="fade" mode="out-in">
+                <component :is="Component" />
+              </transition>
+            </router-view>
+          </main>
         </el-main>
       </el-container>
     </el-container>
@@ -57,6 +64,16 @@ import RouterNavigator from './components/RouterNavigator.vue'
   background-color: #ffffff;
   border-radius: 10px;
   overflow-x: hidden;
+
+  .title {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .el-divider {
+    margin: 16px 0;
+  }
 }
 
 // 路由切换过渡
