@@ -80,10 +80,10 @@ const handleUpdate = async () => {
           <el-input v-model="formData.id" disabled />
         </el-form-item>
         <el-form-item label="昵称" prop="username">
-          <el-input v-model="formData.username" />
+          <el-input v-model="formData.username" :maxlength="32" />
         </el-form-item>
         <el-form-item label="邮箱" prop="email">
-          <el-input v-model="formData.email" />
+          <el-input v-model="formData.email" :maxlength="32" />
         </el-form-item>
         <el-form-item label="性别">
           <el-radio-group v-model="formData.gender">
@@ -110,9 +110,9 @@ const handleUpdate = async () => {
 .form-container {
   width: min(500px, 95%);
   margin: 20px auto 0;
-}
 
-.submit-btn {
-  font-size: 16px;
+  .submit-btn {
+    font-size: 16px;
+  }
 }
 </style>
