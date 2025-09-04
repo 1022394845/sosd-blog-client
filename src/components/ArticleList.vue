@@ -5,7 +5,11 @@ import ArticleCard from './ArticleCard.vue'
 import RowSkeleton from './RowSkeleton.vue'
 import { useTemplateRef, ref } from 'vue'
 import { getHomeArticleListAPI, getSearchListAPI } from '@/apis/article'
-import { getHistoryListAPI, getStarListAPI } from '@/apis/user'
+import {
+  getHistoryListAPI,
+  getStarListAPI,
+  getUserArticleListAPI
+} from '@/apis/user'
 
 const props = defineProps({
   type: {
@@ -24,6 +28,7 @@ const props = defineProps({
 const apiMap = {
   0: getHomeArticleListAPI,
   1: getSearchListAPI,
+  2: getUserArticleListAPI,
   3: getStarListAPI,
   4: getHistoryListAPI
 }
@@ -92,11 +97,15 @@ const showGroup = (index) => {
       >
         <time
           class="group-divider"
-          v-if="[3, 4].includes(type) && showGroup(index)"
-          >{{ item.createTime?.substring(0, 10) }}</time
+          v-if="[2, 3, 4].includes(type) && showGroup(index)"
+          >{{ (item.publishTime || item.createTime)?.substring(0, 10) }}</time
         >
         <router-link :to="`/detail?id=${item.id}`" target="_blank">
-          <article-card :detail="item" :highlight="highlight"></article-card>
+          <article-card
+            :detail="item"
+            :highlight="highlight"
+            :manage="[2].includes(type)"
+          ></article-card>
         </router-link>
       </div>
     </div>

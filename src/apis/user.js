@@ -75,3 +75,15 @@ export const getHistoryListAPI = (page, pageSize, config = {}) =>
   request.get('/user/person/history', {
     params: { page, pageSize, id: config.userId }
   })
+
+/**
+ * 获取个人文章列表
+ * @param {Number} page 当前页码
+ * @param {Number} pageSize 页容量
+ * @param {Object} config 配置项
+ * @param {Number} config.userId 用户id
+ */
+export const getUserArticleListAPI = (page, pageSize, config = {}) =>
+  request.get('/user/person/articles', {
+    params: { page, pageSize, id: config.userId }
+  })

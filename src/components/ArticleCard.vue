@@ -5,10 +5,16 @@ import { Picture } from '@element-plus/icons-vue'
 
 const props = defineProps({
   detail: {
+    // 文章详情
     type: Object,
     required: true
   },
-  highlight: String
+  highlight: String, // 高亮关键词
+  manage: {
+    // 是否需要管理
+    type: Boolean,
+    default: false
+  }
 })
 
 const highlightMatch = (text) => highlightText(text, props.highlight)
@@ -56,6 +62,10 @@ const highlightMatch = (text) => highlightText(text, props.highlight)
           <el-icon><Picture /></el-icon>
         </template>
       </el-image>
+    </div>
+    <div class="manage" v-if="manage">
+      <div class="iconfont icon-edit edit"></div>
+      <div class="iconfont icon-delete delete"></div>
     </div>
   </article>
 </template>
@@ -118,6 +128,8 @@ const highlightMatch = (text) => highlightText(text, props.highlight)
 
       .data {
         flex-shrink: 0;
+        @include hide-below(220px);
+
         &-number {
           margin-left: 5px;
         }
@@ -147,7 +159,25 @@ const highlightMatch = (text) => highlightText(text, props.highlight)
     height: 72px;
     background-color: #f5f7fa;
     font-size: 28px;
-    @include hide-below(300px);
+    @include hide-below(350px);
+  }
+
+  .manage {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100%;
+    font-size: 16px;
+
+    .edit:hover {
+      color: $sosd-main-color-1;
+    }
+
+    .delete:hover {
+      color: #e8001c;
+    }
   }
 }
 </style>
