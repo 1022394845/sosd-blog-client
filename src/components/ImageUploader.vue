@@ -84,11 +84,16 @@ const handleUpload = async (config) => {
 
 /**
  * 开始上传
+ * @returns {Boolean} 是否有文件需要上传
  */
 const upload = () => {
-  if (fileList.value.every((item) => item.status === 'success'))
+  if (fileList.value.every((item) => item.status === 'success')) {
     emits('success')
-  else uploadRef.value.submit()
+    return false
+  } else {
+    uploadRef.value.submit()
+    return true
+  }
 }
 
 defineExpose({ upload })

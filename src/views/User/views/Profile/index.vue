@@ -42,6 +42,7 @@ watch(
 )
 
 // 提交表单
+const btnDisabled = ref(false)
 const onSubmit = async () => {
   // 校验表单
   try {
@@ -51,8 +52,12 @@ const onSubmit = async () => {
     return showMsg('表单校验未通过', 'error')
   }
 
+  btnDisabled.value = true
   // 上传头像
-  if (uploadRef.value) uploadRef.value.upload()
+  if (uploadRef.value) {
+    const needUpload = uploadRef.value.upload()
+    if (needUpload) formRef.value.scrollToField('avatar') // 滚动到上传位置
+  }
 }
 
 // 更新信息
@@ -64,6 +69,7 @@ const handleUpdate = async () => {
     userStore.getUserInfo(formData.value.id) // 重新获取个人信息
   } finally {
     loading.value = false
+    btnDisabled.value = false
   }
 }
 </script>
@@ -88,13 +94,13 @@ const handleUpdate = async () => {
         <el-form-item label="邮箱" prop="email">
           <el-input v-model="formData.email" :maxlength="32" />
         </el-form-item>
-        <el-form-item label="性别">
+        <el-form-item label="性别" prop="gender">
           <el-radio-group v-model="formData.gender">
             <el-radio :value="1">男</el-radio>
             <el-radio :value="2">女</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="头像">
+        <el-form-item label="头像" prop="avatar">
           <image-uploader
             ref="uploadRef"
             v-model="formData.image"
@@ -103,7 +109,11 @@ const handleUpdate = async () => {
           ></image-uploader>
         </el-form-item>
       </el-form>
-      <el-button class="submit-btn gradient-1" @click="onSubmit">
+      <el-button
+        class="submit-btn gradient-1"
+        :loading="btnDisabled"
+        @click="onSubmit"
+      >
         保存
       </el-button>
     </div>

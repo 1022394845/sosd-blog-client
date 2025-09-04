@@ -60,6 +60,7 @@ onMounted(() => {
 })
 
 // 提交表单
+const btnDisabled = ref(false)
 const onSubmit = async () => {
   // 校验表单
   try {
@@ -69,8 +70,12 @@ const onSubmit = async () => {
     return showMsg('表单校验未通过', 'error')
   }
 
+  btnDisabled.value = true
   // 上传封面
-  if (uploadRef.value) uploadRef.value.upload()
+  if (uploadRef.value) {
+    const needUpload = uploadRef.value.upload()
+    if (needUpload) formRef.value.scrollToField('cover') // 滚动到上传位置
+  }
 }
 
 // 发布文章
@@ -94,6 +99,7 @@ const handlePublish = async () => {
     // router.replace('/user/article')
   } finally {
     loading.value = false
+    btnDisabled.value = false
   }
 }
 </script>
@@ -137,7 +143,7 @@ const handlePublish = async () => {
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="封面">
+        <el-form-item label="封面" prop="cover">
           <image-uploader
             ref="uploadRef"
             v-model="formData.image"
@@ -150,7 +156,13 @@ const handlePublish = async () => {
         </el-form-item>
       </el-form>
     </div>
-    <el-button class="submit-btn gradient-1" @click="onSubmit">提交</el-button>
+    <el-button
+      class="submit-btn gradient-1"
+      :loading="btnDisabled"
+      @click="onSubmit"
+    >
+      发布
+    </el-button>
   </div>
 </template>
 
