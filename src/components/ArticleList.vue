@@ -105,6 +105,7 @@ const showGroup = (index) => {
             :detail="item"
             :highlight="highlight"
             :manage="[2].includes(type)"
+            @delete="reload"
           ></article-card>
         </router-link>
       </div>

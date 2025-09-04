@@ -17,3 +17,10 @@ export const getTagListAPI = () => request.get('/user/article/tags')
  */
 export const createArticleAPI = (userId, data) =>
   request.post('/user/article', { userId, ...data })
+
+/**
+ * 删除文章
+ * @param {Number} id 文章id
+ */
+export const deleteArticleAPI = (id) =>
+  request.delete('/user/article', { params: { id } })

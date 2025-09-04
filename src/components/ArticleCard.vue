@@ -1,5 +1,7 @@
 <script setup>
 // 文章卡片
+import { deleteArticleAPI } from '@/apis/publish'
+import { showConfirm, showMsg } from '@/utils/common'
 import { highlightText } from '@/utils/highlight'
 import { Picture } from '@element-plus/icons-vue'
 
@@ -16,8 +18,19 @@ const props = defineProps({
     default: false
   }
 })
+const emits = defineEmits(['delete'])
 
+// 高亮文本
 const highlightMatch = (text) => highlightText(text, props.highlight)
+
+// 删除文章
+const handleDelete = async () => {
+  const cancel = await showConfirm('确定删除该文章吗？', '不可逆操作')
+  if (cancel) return
+  await deleteArticleAPI(props.detail.id)
+  showMsg('删除成功', 'warning')
+  emits('delete')
+}
 </script>
 
 <template>
@@ -44,12 +57,12 @@ const highlightMatch = (text) => highlightText(text, props.highlight)
           <span class="data-icon iconfont icon-like"></span>
           <span class="data-number">{{ detail.likeNumber }}</span>
         </div>
-        <div class="tag-list">
+        <div class="tag-list" @click.stop.prevent>
           <div
             class="tag color-hover ellipsis"
             v-for="item in detail.tags"
             :key="item.id"
-            @click.stop.prevent="$router.replace(`/search?tag=${item.name}`)"
+            @click="$router.replace(`/search?tag=${item.name}`)"
           >
             {{ item.name }}
           </div>
@@ -63,9 +76,9 @@ const highlightMatch = (text) => highlightText(text, props.highlight)
         </template>
       </el-image>
     </div>
-    <div class="manage" v-if="manage">
+    <div class="manage" v-if="manage" @click.stop.prevent>
       <div class="iconfont icon-edit edit"></div>
-      <div class="iconfont icon-delete delete"></div>
+      <div class="iconfont icon-delete delete" @click="handleDelete"></div>
     </div>
   </article>
 </template>
