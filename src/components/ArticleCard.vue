@@ -175,7 +175,7 @@ const handleDelete = async () => {
     height: 72px;
     background-color: #f5f7fa;
     font-size: 28px;
-    @include hide-below(350px);
+    @include hide-below(430px);
   }
 
   .manage {
