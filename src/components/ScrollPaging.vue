@@ -48,7 +48,11 @@ const observer = useObserver(loadingRef, handleNextPage)
 const completeByTotal = (data, listTotal, result = true) => {
   const isFail = data === false || !Array.isArray(data) || !result
   if (isFail) {
-    status.value = 2 // 请求失败
+    if (listTotal === 0) {
+      // 无数据
+      status.value = 1
+      observer.disconnect() // 卸载监听
+    } else status.value = 2 // 请求失败
     return
   }
 
