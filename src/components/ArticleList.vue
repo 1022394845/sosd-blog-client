@@ -66,8 +66,8 @@ defineExpose({ reload })
 const showGroup = (index) => {
   if (index === 0) return true // 数组第一项
 
-  const current = new Date(articleList.value[index].createTime)
-  const last = new Date(articleList.value[index - 1].createTime)
+  const current = new Date(articleList.value[index].publishTime)
+  const last = new Date(articleList.value[index - 1].publishTime)
 
   return (
     current.getDate() !== last.getDate() ||
@@ -98,8 +98,9 @@ const showGroup = (index) => {
         <time
           class="group-divider"
           v-if="[2, 3, 4].includes(type) && showGroup(index)"
-          >{{ (item.publishTime || item.createTime)?.substring(0, 10) }}</time
         >
+          {{ item.publishTime?.substring(0, 10) }}
+        </time>
         <router-link :to="`/detail?id=${item.id}`" target="_blank">
           <article-card
             :detail="item"
