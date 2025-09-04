@@ -1,7 +1,7 @@
 <script setup>
 // 单张图片上传器
 import { Plus } from '@element-plus/icons-vue'
-import { ref, useTemplateRef, onMounted } from 'vue'
+import { ref, useTemplateRef, watch } from 'vue'
 import { genFileId } from 'element-plus'
 import { showMsg } from '@/utils/common'
 import { uploadFileAPI } from '@/apis/common'
@@ -20,11 +20,19 @@ const fileList = ref([])
 const uploadRef = useTemplateRef('uploadRef')
 
 // 初始化回显
-onMounted(() => {
-  if (url.value) {
-    fileList.value[0] = { url: url.value }
+let stopWatch = null
+stopWatch = watch(
+  url,
+  (newValue, oldValue) => {
+    if (oldValue === undefined && newValue) {
+      fileList.value[0] = { url: newValue }
+      if (stopWatch) stopWatch()
+    }
+  },
+  {
+    immediate: true
   }
-})
+)
 
 // 预览图片
 const dialogVisible = ref(false)
