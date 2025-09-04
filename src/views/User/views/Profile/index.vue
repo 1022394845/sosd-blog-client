@@ -59,9 +59,12 @@ const onSubmit = async () => {
 const loading = ref(false)
 const handleUpdate = async () => {
   loading.value = true
-  await modifyUserInfoAPI(formData.value)
-  loading.value = false
-  userStore.getUserInfo(formData.value.id) // 重新获取个人信息
+  try {
+    await modifyUserInfoAPI(formData.value)
+    userStore.getUserInfo(formData.value.id) // 重新获取个人信息
+  } finally {
+    loading.value = false
+  }
 }
 </script>
 

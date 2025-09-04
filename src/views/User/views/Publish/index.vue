@@ -1,13 +1,21 @@
 <script setup>
-import { getTagListAPI } from '@/apis/publish'
+import { createArticleAPI, getTagListAPI } from '@/apis/publish'
 import ImageUploader from '@/components/ImageUploader.vue'
 import RichTextEditor from '@/components/RichTextEditor.vue'
 import { useArticleStore } from '@/stores/article'
+import { useUserStore } from '@/stores/user'
+import { showMsg } from '@/utils/common'
 import { ref, useTemplateRef, onMounted, computed } from 'vue'
+import { useRouter } from 'vue-router'
+
+const userStore = useUserStore()
+const router = useRouter()
 
 // 表单
 const formRef = useTemplateRef('formRef')
+const uploadRef = useTemplateRef('uploadRef')
 const formData = ref({
+  id: undefined,
   title: undefined,
   image: undefined,
   categoryId: null,
@@ -18,7 +26,7 @@ const formData = ref({
 const trimContent = computed(() => {
   const content = formData.value.content
   if (typeof content !== 'string') return undefined
-  if (content.endsWith('<p><br></p>')) return content.slice(0, 11)
+  if (content.endsWith('<p><br></p>')) return content.slice(0, -11)
   return content
 })
 
@@ -30,7 +38,6 @@ const rules = {
   content: [
     {
       validator: (rule, value, callback) => {
-        callback()
         if (trimContent.value) callback()
         else callback(new Error('内容不可为空'))
       },
@@ -51,10 +58,48 @@ const getTagList = async () => {
 onMounted(() => {
   getTagList()
 })
+
+// 提交表单
+const onSubmit = async () => {
+  // 校验表单
+  try {
+    const result = await formRef.value.validate()
+    if (!result) throw new Error()
+  } catch {
+    return showMsg('表单校验未通过', 'error')
+  }
+
+  // 上传封面
+  if (uploadRef.value) uploadRef.value.upload()
+}
+
+// 发布文章
+const loading = ref(false)
+const handlePublish = async () => {
+  loading.value = true
+
+  const data = {
+    ...formData.value,
+    content: trimContent.value
+  }
+  try {
+    if (data.id) {
+      // 编辑文章
+    } else {
+      // 新建文章
+      await createArticleAPI(userStore.getCurrentUserId(), data)
+      showMsg('新建成功', 'success')
+    }
+
+    // router.replace('/user/article')
+  } finally {
+    loading.value = false
+  }
+}
 </script>
 
 <template>
-  <div class="page-container">
+  <div class="page-container" v-loading="loading">
     <div class="form-container">
       <el-form
         ref="formRef"
@@ -63,6 +108,7 @@ onMounted(() => {
         label-width="auto"
         hide-required-asterisk
         scroll-to-error
+        :scroll-into-view-options="{ block: 'center' }"
       >
         <el-form-item label="标题" prop="title">
           <el-input
@@ -93,8 +139,10 @@ onMounted(() => {
         </el-form-item>
         <el-form-item label="封面">
           <image-uploader
+            ref="uploadRef"
             v-model="formData.image"
             size="min(148px, 30vw)"
+            @success="handlePublish"
           ></image-uploader>
         </el-form-item>
         <el-form-item label="内容" prop="content">
@@ -102,7 +150,7 @@ onMounted(() => {
         </el-form-item>
       </el-form>
     </div>
-    <el-button class="submit-btn gradient-1">提交</el-button>
+    <el-button class="submit-btn gradient-1" @click="onSubmit">提交</el-button>
   </div>
 </template>
 
