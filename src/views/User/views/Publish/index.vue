@@ -3,7 +3,8 @@ import {
   createArticleAPI,
   getEditArticleAPI,
   getTagListAPI,
-  modifyArticleAPI
+  modifyArticleAPI,
+  publishArticleAPI
 } from '@/apis/publish'
 import ImageUploader from '@/components/ImageUploader.vue'
 import RichTextEditor from '@/components/RichTextEditor.vue'
@@ -131,6 +132,7 @@ const onSubmit = async (publish = false) => {
 // 保存文章
 const handleSave = async () => {
   loading.value = true
+  let skipCloseLoading = false // 是否跳过解除loading
 
   try {
     if (needSave) {
@@ -166,18 +168,23 @@ const handleSave = async () => {
 
     if (directPublish) {
       handlePublish() // 直接发布文章
-      return // 跳过解除loading
+      skipCloseLoading = true // 跳过解除loading
     }
   } finally {
-    loading.value = false
-    btnDisabled.value = false
+    if (!skipCloseLoading) {
+      loading.value = false
+      btnDisabled.value = false
+    }
   }
 }
 
 // 发布文章
-const handlePublish = () => {
-  console.log('publish')
+const handlePublish = async () => {
+  await publishArticleAPI(formData.value.id)
+  showMsg('发布成功', 'success')
   allowPublish.value = false
+  loading.value = false
+  btnDisabled.value = false
 }
 </script>
 

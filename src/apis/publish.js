@@ -43,3 +43,10 @@ export const getEditArticleAPI = (id) =>
  * @param {String} [data.image] 文章封面
  */
 export const modifyArticleAPI = (data) => request.put('/user/article', data)
+
+/**
+ * 发布文章
+ * @param {Number} id 文章id
+ */
+export const publishArticleAPI = (id) =>
+  request.put('/user/article/submit', {}, { params: { id } })
