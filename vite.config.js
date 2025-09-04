@@ -9,10 +9,13 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
+import { visualizer } from 'rollup-plugin-visualizer'
+
 // https://vite.dev/config/
 export default defineConfig({
   base: './',
   plugins: [
+    visualizer(),
     vue(),
     vueDevTools(),
     AutoImport({
@@ -36,6 +39,19 @@ export default defineConfig({
           @use "@/styles/var.scss" as *;
           @use "@/styles/glow-btn.scss" as *;
         `
+      }
+    }
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        // 手动分割策略
+        manualChunks: {
+          // 拆分大型第三方依赖
+          'vue-chunks': ['vue', 'vue-router', 'pinia'],
+          'element-plus': ['element-plus', '@element-plus/icons-vue'],
+          'wang-editor': ['@wangeditor/editor', '@wangeditor/editor-for-vue']
+        }
       }
     }
   }

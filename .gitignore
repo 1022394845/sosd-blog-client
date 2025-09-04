@@ -32,3 +32,6 @@ coverage
 # 环境变量文件
 .env.development
 .env.production
+
+# 打包优化插件展示
+stats.html
