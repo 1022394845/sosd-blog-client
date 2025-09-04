@@ -75,6 +75,7 @@ const handleUpload = async (config) => {
     })
     url.value = data
     config.onSuccess()
+    emits('success')
   } catch {
     if (uploadRef.value) uploadRef.value.abort()
     config.onError()
@@ -85,12 +86,9 @@ const handleUpload = async (config) => {
  * 开始上传
  */
 const upload = () => {
-  if (fileList.value.every((item) => item.status === 'success')) onSuccess()
+  if (fileList.value.every((item) => item.status === 'success'))
+    emits('success')
   else uploadRef.value.submit()
-}
-
-const onSuccess = () => {
-  emits('success')
 }
 
 defineExpose({ upload })
@@ -109,7 +107,6 @@ defineExpose({ upload })
     :on-remove="handleRemove"
     :before-upload="(file) => validateAvatarFile(file)"
     :http-request="(config) => handleUpload(config)"
-    :on-success="onSuccess"
   >
     <el-icon><Plus /></el-icon>
   </el-upload>
