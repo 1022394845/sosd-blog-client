@@ -1,12 +1,19 @@
 <script setup>
-import { createArticleAPI, getTagListAPI } from '@/apis/publish'
+import {
+  createArticleAPI,
+  getEditArticleAPI,
+  getTagListAPI,
+  modifyArticleAPI
+} from '@/apis/publish'
 import ImageUploader from '@/components/ImageUploader.vue'
 import RichTextEditor from '@/components/RichTextEditor.vue'
 import { useArticleStore } from '@/stores/article'
 import { useUserStore } from '@/stores/user'
 import { showMsg } from '@/utils/common'
-import { ref, useTemplateRef, onMounted, computed, watch } from 'vue'
+import { ref, useTemplateRef, onMounted, computed, watch, nextTick } from 'vue'
+import { useRoute } from 'vue-router'
 
+const route = useRoute()
 const userStore = useUserStore()
 
 // 表单
@@ -27,7 +34,6 @@ const trimContent = computed(() => {
   if (content.endsWith('<p><br></p>')) return content.slice(0, -11)
   return content
 })
-
 // 校验规则
 const rules = {
   title: [{ required: true, message: '标题不可为空', trigger: 'blur' }],
@@ -44,6 +50,25 @@ const rules = {
   ]
 }
 
+let needSave = false // 需要保存
+let allowPublish = ref(true) // 允许发布
+let stopWatch = null
+// 创建修改监听器
+const createWatcher = () => {
+  if (stopWatch) stopWatch() // 销毁已存在的监听器
+  stopWatch = watch(
+    formData,
+    () => {
+      needSave = true
+      stopWatch() // 停止监听
+      stopWatch = null
+    },
+    {
+      deep: true
+    }
+  )
+}
+
 // 分类类型
 const { categoryList } = useArticleStore()
 
@@ -53,18 +78,39 @@ const getTagList = async () => {
   const data = await getTagListAPI()
   tagList.value = data
 }
-onMounted(() => {
+
+/**
+ * 数据回显
+ * @param {Number} id 文章id
+ */
+const getDetail = async (id) => {
+  const { status, ...data } = await getEditArticleAPI(id)
+  formData.value = {
+    ...data,
+    id
+  }
+  if (status > 1) allowPublish.value = false
+}
+
+const loading = ref(true)
+onMounted(async () => {
+  loading.value = true
+  if (route.query.id) await getDetail(Number(route.query.id))
+  loading.value = false
   getTagList()
+  nextTick(() => {
+    createWatcher() // 创建监听器
+  })
 })
 
-const allowPublish = ref(false)
+let directPublish = false // 保存后自动提交
 const btnDisabled = ref(false)
 /**
  * 提交表单
- * @param {Boolean} publish 保存后自动提交 默认false
+ * @param {Boolean} publish 是否自动提交 默认false
  */
 const onSubmit = async (publish = false) => {
-  allowPublish.value = publish
+  directPublish = publish
 
   // 校验表单
   try {
@@ -82,29 +128,7 @@ const onSubmit = async (publish = false) => {
   }
 }
 
-let needSave = false // 需要保存
-let stopWatch = null
-// 创建修改监听器
-const createWatcher = () => {
-  if (stopWatch) stopWatch() // 销毁已存在的监听器
-  stopWatch = watch(
-    formData,
-    () => {
-      needSave = true
-      stopWatch() // 停止监听
-      stopWatch = null
-    },
-    {
-      deep: true
-    }
-  )
-}
-onMounted(() => {
-  createWatcher()
-})
-
 // 保存文章
-const loading = ref(false)
 const handleSave = async () => {
   loading.value = true
 
@@ -118,6 +142,7 @@ const handleSave = async () => {
 
       if (data.id) {
         // 编辑文章
+        await modifyArticleAPI(data)
         showMsg('保存成功', 'success')
       } else {
         // 新建文章
@@ -125,14 +150,21 @@ const handleSave = async () => {
           userStore.getCurrentUserId(),
           data
         )
-        if (typeof articleId === 'number') formData.value.id = articleId
+        if (typeof articleId === 'number') {
+          // 暂时停止监听
+          if (stopWatch) {
+            stopWatch() // 停止监听
+            stopWatch = null
+          }
+          formData.value.id = articleId
+        }
         showMsg('新建成功', 'success')
       }
       needSave = false
       createWatcher() // 创建修改监听器
     }
 
-    if (allowPublish.value) {
+    if (directPublish) {
       handlePublish() // 直接发布文章
       return // 跳过解除loading
     }
@@ -205,13 +237,13 @@ const handlePublish = () => {
       <el-button
         class="submit-btn gradient-1"
         :loading="btnDisabled"
-        @click="onSubmit"
+        @click="onSubmit(false)"
       >
-        {{ isNaN(formData.id) ? '新建' : '保存' }}
+        {{ Number.isNaN(formData.id) ? '新建' : '保存' }}
       </el-button>
       <el-button
         class="submit-btn gradient-2"
-        v-if="isNaN(formData.id) || allowPublish"
+        v-if="Number.isNaN(formData.id) || allowPublish"
         :loading="btnDisabled"
         @click="onSubmit(true)"
       >

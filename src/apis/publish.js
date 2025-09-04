@@ -24,3 +24,22 @@ export const createArticleAPI = (userId, data) =>
  */
 export const deleteArticleAPI = (id) =>
   request.delete('/user/article', { params: { id } })
+
+/**
+ * 获取文章详情
+ * @param {Number} id 文章id
+ */
+export const getEditArticleAPI = (id) =>
+  request.get('/user/person/article', { params: { id } })
+
+/**
+ * 修改文章
+ * @param {Object} data 文章信息
+ * @param {Number} data.id 文章id
+ * @param {String} [data.title] 文章标题
+ * @param {Number} [data.categoryId] 文章分类id
+ * @param {Number[]} [data.tags] 文章标签
+ * @param {String} [data.content] 文章内容
+ * @param {String} [data.image] 文章封面
+ */
+export const modifyArticleAPI = (data) => request.put('/user/article', data)

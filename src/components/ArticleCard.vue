@@ -77,7 +77,10 @@ const handleDelete = async () => {
       </el-image>
     </div>
     <div class="manage" v-if="manage" @click.stop.prevent>
-      <div class="iconfont icon-edit edit"></div>
+      <div
+        class="iconfont icon-edit edit"
+        @click="$router.push(`/user/publish?id=${detail.id}`)"
+      ></div>
       <div class="iconfont icon-delete delete" @click="handleDelete"></div>
     </div>
   </article>
