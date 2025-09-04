@@ -55,4 +55,10 @@ import LoginDialog from '@/components/LoginDialog.vue'
   font-size: 16px;
   font-size: inherit;
 }
+
+.el-container {
+  h1 {
+    font-size: 2em;
+  }
+}
 </style>

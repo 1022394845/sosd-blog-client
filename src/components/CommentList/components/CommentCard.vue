@@ -148,6 +148,10 @@ const onSubmit = async (value) => {
       }
     }
 
+    .content {
+      font-size: 14px;
+    }
+
     .btn-group {
       display: flex;
       align-items: center;
