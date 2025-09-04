@@ -7,12 +7,15 @@ import {
 import { defaultSuccess, requiredError } from '@/utils/common'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 
 export const useUserStore = defineStore(
   'user',
   () => {
     const token = ref(null)
     const userInfo = ref({})
+    const route = useRoute()
+    const router = useRouter()
 
     /**
      * 用户登录
@@ -36,6 +39,8 @@ export const useUserStore = defineStore(
     function logout() {
       token.value = null
       userInfo.value = {}
+      // 如果当前页需要登录权限 重定向至首页
+      if (route.meta.requiresAuth) router.replace('/')
     }
 
     /**

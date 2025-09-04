@@ -46,6 +46,8 @@ request.interceptors.response.use(
     if (error.status === 401) {
       // token失效/无权限
       showMsg('登录过期，请重新登录', 'error')
+      const userStore = useUserStore()
+      userStore.logout()
     }
     // 默认错误
     else showMsg(error.response?.data.msg || '服务异常', 'error')
