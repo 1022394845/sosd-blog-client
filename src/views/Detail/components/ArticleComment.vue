@@ -32,7 +32,8 @@ const handelPublish = async (value) => {
  */
 const commentAreaRef = useTemplateRef('commentAreaRef')
 const goComment = () => {
-  if (commentAreaRef.value) commentAreaRef.value.scrollIntoView()
+  if (commentAreaRef.value)
+    commentAreaRef.value.scrollIntoView({ block: 'center' })
   // 聚焦编辑器
   setTimeout(() => {
     if (publishRef.value) publishRef.value.focus()
