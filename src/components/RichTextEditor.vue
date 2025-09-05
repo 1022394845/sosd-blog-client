@@ -17,6 +17,25 @@ const toolbarConfig = {
 const editorConfig = {
   placeholder: '请输入内容...',
   MENU_CONF: {
+    // 代码块
+    codeSelectLang: {
+      codeLangs: [
+        { text: 'CSS', value: 'css' },
+        { text: 'HTML', value: 'html' },
+        { text: 'XML', value: 'xml' },
+        { text: 'Javascript', value: 'javascript' },
+        { text: 'Typescript', value: 'typescript' },
+        { text: 'Go', value: 'go' },
+        { text: 'PHP', value: 'php' },
+        { text: 'C', value: 'c' },
+        { text: 'Python', value: 'python' },
+        { text: 'Java', value: 'java' },
+        { text: 'C++', value: 'cpp' },
+        { text: 'C#', value: 'csharp' },
+        { text: 'SQL', value: 'sql' },
+        { text: 'Markdown', value: 'markdown' }
+      ]
+    },
     // 上传图片
     uploadImage: {
       // 自定义上传
