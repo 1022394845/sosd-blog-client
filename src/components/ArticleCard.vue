@@ -53,7 +53,11 @@ const handleDelete = async () => {
           <span class="data-icon iconfont icon-view"></span>
           <span class="data-number">{{ detail.viewNumber }}</span>
         </div>
-        <div class="data like color-hover" style="margin-left: 20px">
+        <div
+          class="data like color-hover"
+          style="margin-left: 20px"
+          :class="{ active: detail.isLike }"
+        >
           <span class="data-icon iconfont icon-like"></span>
           <span class="data-number">{{ detail.likeNumber }}</span>
         </div>
@@ -112,7 +116,8 @@ const handleDelete = async () => {
     width: 0;
     height: 100%;
 
-    .color-hover:hover {
+    .color-hover:hover,
+    .active {
       color: $sosd-main-color-1;
     }
 
