@@ -29,6 +29,11 @@ export default defineConfig({
     importToCDN({
       modules: [
         {
+          name: 'axios',
+          var: 'axios',
+          path: 'https://unpkg.com/axios@1.11.0/dist/axios.min.js'
+        },
+        {
           name: 'element-plus',
           var: 'ElementPlus',
           path: [
