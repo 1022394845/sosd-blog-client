@@ -45,13 +45,28 @@ const highlight = async () => {
   const codeBlocks = containerRef.value.querySelectorAll('pre code')
 
   for (const block of codeBlocks) {
-    try {
-      const language = block.className.replace('language-', '') || 'plaintext'
-      if (!loadedLanguages.has(language)) await registerLanguage(language)
+    const language = block.className.replace('language-', '') || 'plaintext'
 
+    try {
+      if (!loadedLanguages.has(language)) await registerLanguage(language)
       hljs.highlightBlock(block)
     } catch {
       block.classList.add('hljs-error')
+    }
+
+    // 为代码块添加语言显示
+    if (!block.querySelector('.language-label')) {
+      const label = document.createElement('div')
+      label.className = 'language-label'
+      label.textContent = language
+
+      if (block.firstChild) {
+        // 如果有子元素，插入到第一个子元素之前
+        block.insertBefore(label, block.firstChild)
+      } else {
+        // 如果没有子元素，直接添加
+        block.appendChild(label)
+      }
     }
   }
 }
@@ -120,7 +135,17 @@ watch(
     margin: 10px 0;
 
     code {
+      padding-top: 5px;
+      border-radius: 5px;
       font-family: 'Consolas';
+
+      .language-label {
+        padding-bottom: 5px;
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: #ffffff;
+        border-bottom: 1px solid #666666;
+      }
     }
   }
 }
