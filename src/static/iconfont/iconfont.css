@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4926329 */
-  src: url('iconfont.woff2?t=1756977223359') format('woff2'),
-       url('iconfont.woff?t=1756977223359') format('woff'),
-       url('iconfont.ttf?t=1756977223359') format('truetype');
+  src: url('iconfont.woff2?t=1757046252186') format('woff2'),
+       url('iconfont.woff?t=1757046252186') format('woff'),
+       url('iconfont.ttf?t=1757046252186') format('truetype');
 }
 
 .iconfont {
@@ -20,22 +20,6 @@
 
 .icon-edit:before {
   content: "\e605";
-}
-
-.icon-history:before {
-  content: "\e604";
-}
-
-.icon-profile:before {
-  content: "\e601";
-}
-
-.icon-article:before {
-  content: "\e67d";
-}
-
-.icon-star:before {
-  content: "\e603";
 }
 
 .icon-comment:before {

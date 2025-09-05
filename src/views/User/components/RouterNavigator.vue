@@ -2,6 +2,7 @@
 // 路由导航
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
+import { User, Document, Star, Clock } from '@element-plus/icons-vue'
 
 const props = defineProps({
   mode: {
@@ -18,10 +19,10 @@ const publishBtnMarginRight = computed(() =>
 )
 
 const routerList = [
-  { label: 'profile', name: '个人信息' },
-  { label: 'article', name: '文章管理' },
-  { label: 'star', name: '我的收藏' },
-  { label: 'history', name: '历史足迹' }
+  { label: 'profile', name: '个人信息', icon: User },
+  { label: 'article', name: '文章管理', icon: Document },
+  { label: 'star', name: '我的收藏', icon: Star },
+  { label: 'history', name: '历史足迹', icon: Clock }
 ]
 
 const route = useRoute()
@@ -49,11 +50,10 @@ const activeMenu = computed(() => `/user/${route.name}`)
         :key="item.label"
         :index="`/user/${item.label}`"
       >
-        <span
-          class="iconfont"
-          v-if="mode === 'vertical'"
-          :class="`icon-${item.label}`"
-        ></span>
+        <el-icon class="icon" v-if="mode === 'vertical'">
+          <component :is="item.icon"></component>
+        </el-icon>
+
         <span>{{ item.name }}</span>
       </el-menu-item>
     </el-menu>
@@ -86,10 +86,8 @@ const activeMenu = computed(() => `/user/${route.name}`)
       background-color: rgba($sosd-main-color-1, 0.2);
     }
 
-    .iconfont {
+    .icon {
       margin-right: 24px;
-      font-size: 18px;
-      font-weight: 700;
     }
   }
 }
