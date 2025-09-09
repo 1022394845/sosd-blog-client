@@ -72,6 +72,14 @@ onBeforeUnmount(() => {
   if (editor == null) return
   editor.destroy()
 })
+
+/**
+ * 获取富文本纯文字内容
+ */
+const getText = () => {
+  return editorRef.value.getText() || ''
+}
+defineExpose({ getText })
 </script>
 
 <template>

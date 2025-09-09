@@ -11,6 +11,7 @@ import RichTextEditor from '@/components/RichTextEditor.vue'
 import { useArticleStore } from '@/stores/article'
 import { useUserStore } from '@/stores/user'
 import { showMsg } from '@/utils/common'
+import { replaceNewlinesWithSpace } from '@/utils/format'
 import { ref, useTemplateRef, onMounted, computed, watch, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -130,6 +131,7 @@ const onSubmit = async (publish = false) => {
 }
 
 // 保存文章
+const editorRef = useTemplateRef('editorRef')
 const handleSave = async () => {
   loading.value = true
   let skipCloseLoading = false // 是否跳过解除loading
@@ -137,9 +139,12 @@ const handleSave = async () => {
   try {
     if (needSave) {
       // 需要保存文章内容
+      // 获取preview
+      const preview = replaceNewlinesWithSpace(editorRef.value.getText())
       const data = {
         ...formData.value,
-        content: trimContent.value
+        content: trimContent.value,
+        preview
       }
 
       if (data.id) {
@@ -236,7 +241,10 @@ const handlePublish = async () => {
           ></image-uploader>
         </el-form-item>
         <el-form-item label="内容" prop="content">
-          <rich-text-editor v-model="formData.content"></rich-text-editor>
+          <rich-text-editor
+            ref="editorRef"
+            v-model="formData.content"
+          ></rich-text-editor>
         </el-form-item>
       </el-form>
     </div>
