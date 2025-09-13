@@ -34,7 +34,7 @@ request.interceptors.response.use(
     if (
       response?.status >= 200 &&
       response?.status < 300 &&
-      (NODE_ENV !== 'development' || response?.data.code === 1)
+      (NODE_ENV === 'development' || response?.data.code === 1)
     ) {
       return response.data.data
     }
